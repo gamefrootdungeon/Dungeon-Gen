@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     public GridManager gridManager;
     public JsonConvertManager conversionManager;
     public CanvasSampleOpenFileTextJson fileBrowser;
-
+    public AccountTest userId;
 
     public bool isTopDown = false;
 
@@ -32,8 +32,9 @@ public class UIManager : MonoBehaviour
     public GameObject levelInfo;
     public TextMeshProUGUI titleInfoText;
     public TextMeshProUGUI InfoText;
+    public TextMeshProUGUI userIDText;
 
-
+    public string userID;
     public TextAsset DefaultJson;
     public void SpawnPlayer()
     {
@@ -51,6 +52,13 @@ public class UIManager : MonoBehaviour
             PauseMenu.SetActive(false);
             ResumeGame();
         }
+    }
+    private void Start()
+    {
+        print(StoreUserID.instance.userID);
+        userID = StoreUserID.instance.userID;
+        print("User ID " + userID);
+        userIDText.text = userID;
     }
     private void Update()
     {
@@ -230,6 +238,7 @@ public class UIManager : MonoBehaviour
         isInMenu = false;
         MainMenu.SetActive(false);
         PauseMenu.SetActive(false);
+        userId.SetUserID();
         if (!isTopDown)
         {
             HideMouse();

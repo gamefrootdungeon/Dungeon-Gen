@@ -42,6 +42,7 @@ public class WalletLogin: MonoBehaviour
             else
                 PlayerPrefs.SetInt("RememberMe", 0);
             print("Account: " + account);
+            StoreUserID.instance.userID = account;
             // load next scene
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
