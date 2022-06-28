@@ -412,6 +412,8 @@ public class GridManager : MonoBehaviour
             GameObject NewSpawnedobject = Instantiate(NFTChestObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
             NewSpawnedobject.transform.SetParent(worldGrp.transform);
             cell.AddTileData(NewSpawnedobject);
+            grid[(int)NumEdgePieces[num].position.x, (int)NumEdgePieces[num].position.y].AddTileData(NewSpawnedobject);
+            NumEdgePieces.Remove(cell);
         }
     }
     private void SpawnInObject(float yOffset, float flipDirection, GameObject objectToSpawn)
