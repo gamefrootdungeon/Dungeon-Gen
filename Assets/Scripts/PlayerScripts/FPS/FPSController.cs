@@ -62,7 +62,8 @@ public class FPSController : MonoBehaviour
 
 	void Update()
 	{
-
+		if (facingWallBool == true)
+			CheckIfWallInFront();
 		QueueJump();
 
         /* Movement, here's the important part */
@@ -92,8 +93,7 @@ public class FPSController : MonoBehaviour
 	private bool facingWallBool = true;
     private void FixedUpdate()
     {
-		if(facingWallBool == true)
-			CheckIfWallInFront();
+
 		IsGrounded = Physics.CheckSphere(GroundCheck.position, GroundDistance/*, GroundMask*/);
 	}
     public void SetMovementDir()
@@ -125,10 +125,17 @@ public class FPSController : MonoBehaviour
     }
 	private bool facingWall = true;
 	private bool wallCheck = false;
-
+	[SerializeField] private bool DoWallCheck = false;
 
 	public void CheckIfWallInFront()
 	{
+		if (DoWallCheck == false)
+        {
+			facingWallBool = false;
+			return;
+		}
+
+
 		//print("Check");
 		if (!isFPS)
         {

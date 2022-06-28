@@ -12,13 +12,14 @@ public class UIManager : MonoBehaviour
     public GridManager gridManager;
     public JsonConvertManager conversionManager;
     public CanvasSampleOpenFileTextJson fileBrowser;
-    public AccountTest userId;
+
 
     public bool isTopDown = false;
 
     [SerializeField]private GameObject MainMenu;
     [SerializeField]private GameObject PauseMenu;
     [SerializeField]private GameObject playBtn;
+    [SerializeField] private GameObject userIcon;
 
     public GameObject HudUIObj;
 
@@ -55,8 +56,18 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
+        if(StoreUserID.instance.isLoggedin == true)
+        {
+            userIcon.SetActive(true);
+        }
+        else if (StoreUserID.instance.isLoggedin == false)
+        {
+            userIcon.SetActive(false);
+        }
+        print("Storing values");
         print(StoreUserID.instance.userID);
         userID = StoreUserID.instance.userID;
+
         print("User ID " + userID);
         userIDText.text = userID;
     }
@@ -214,6 +225,7 @@ public class UIManager : MonoBehaviour
 
     public void ToMainMenu()
     {
+        Time.timeScale = 1;
         gridManager.DestroyDungeon();
         playBtn.SetActive(false);
         playLevelBtnImageCover.SetActive(true);
@@ -227,6 +239,7 @@ public class UIManager : MonoBehaviour
 
     public void ToPauseMenu()
     {
+        Time.timeScale = 0;
         isInMenu = true;
         MainMenu.SetActive(false);
         PauseMenu.SetActive(true);
@@ -235,10 +248,10 @@ public class UIManager : MonoBehaviour
     }
     public void ResumeGame()
     {
+        Time.timeScale = 1;
         isInMenu = false;
         MainMenu.SetActive(false);
         PauseMenu.SetActive(false);
-        userId.SetUserID();
         if (!isTopDown)
         {
             HideMouse();

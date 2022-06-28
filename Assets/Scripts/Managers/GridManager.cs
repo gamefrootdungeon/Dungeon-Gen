@@ -156,12 +156,12 @@ public class GridManager : MonoBehaviour
             roomType.Add(i, randomNum);
             
         }
-        print("index 0" + roomType[0]);
-        print("index 1" + roomType[1]);
-        print("index 2" + roomType[2]);
-        print("index 3" + roomType[3]);
-        print("index 4" + roomType[4]);
-        print("index 5" + roomType[5]);
+        //print("index 0" + roomType[0]);
+        //print("index 1" + roomType[1]);
+        //print("index 2" + roomType[2]);
+        //print("index 3" + roomType[3]);
+        //print("index 4" + roomType[4]);
+        //print("index 5" + roomType[5]);
     }
     private void ConvertTo2DArray(ConvertFromJsonToGridClass data)
     {
@@ -273,7 +273,7 @@ public class GridManager : MonoBehaviour
     }
     public void Createtile()
     {
-        //print("Create tile call");
+        print("Create tile call");
         worldGrp = new GameObject();
         worldGrp.tag = "World_Grp";
         worldGrp.name = "World_Grp";
@@ -354,6 +354,7 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
+        print("Tiles spawned ");
         SetPlayerSpawn(yOffset, flipDirection);
         SpawnInLevelDataObject(yOffset, flipDirection, levelInfoObj);
         SpawnInObject(yOffset, flipDirection, NFTChestObj);

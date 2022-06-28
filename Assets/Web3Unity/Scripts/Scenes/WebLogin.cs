@@ -33,7 +33,9 @@ public class WebLogin : MonoBehaviour
         };
         // save account for next scene
         //PlayerPrefs.SetString("Account", account);
+        print(account);
         StoreUserID.instance.userID = account;
+        StoreUserID.instance.isLoggedin = true;
         // reset login message
         SetConnectAccount("");
         // load next scene
@@ -45,6 +47,8 @@ public class WebLogin : MonoBehaviour
         // burner account for skipped sign in screen
         //PlayerPrefs.SetString("Account", "");
         StoreUserID.instance.userID = "No User";
+        StoreUserID.instance.isLoggedin = false;
+        print("Skip");
         // move to next scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }

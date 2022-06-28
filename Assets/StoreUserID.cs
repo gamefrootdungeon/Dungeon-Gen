@@ -5,6 +5,7 @@ using UnityEngine;
 public class StoreUserID : MonoBehaviour
 {
     public string userID ="";
+    public bool isLoggedin = false;
     public static StoreUserID instance;
     void Awake()
     {
