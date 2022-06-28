@@ -18,6 +18,7 @@ public class Cell
     public Vector2 position;
     public float rotation = 0;
     public GameObject objectInTile;
+    public int prefabNumber = -1;
 
     public int roomNumber;
     public int roomWidth;

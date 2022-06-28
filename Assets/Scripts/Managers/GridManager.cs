@@ -41,6 +41,7 @@ public class GridManager : MonoBehaviour
     private GameObject player;
     private Vector3 playerStartCoord;
     private List<TileData> SpawnLocations = new List<TileData>();
+    [SerializeField] private List<Cell> NumEdgePieces = new List<Cell>();
 
     public string JsonText = "";
     [SerializeField] private bool SpawnInNotes = false;
@@ -63,6 +64,7 @@ public class GridManager : MonoBehaviour
 
     //When add to the array group in the tile prefab remeber to change this number to match the size
     public int NumberOfDifferentRoomTypes;
+    public Dictionary<int, int> roomType = new Dictionary<int, int>();
     public void Start()
     {
         CheckWhatPlayerType();
@@ -140,7 +142,7 @@ public class GridManager : MonoBehaviour
     }
 
 
-    public Dictionary<int, int> roomType = new Dictionary<int, int>();
+
     public void SetUpRoomTypes()
     {
         HashSet<int> temp = new HashSet<int>();
@@ -357,10 +359,12 @@ public class GridManager : MonoBehaviour
         print("Tiles spawned ");
         SetPlayerSpawn(yOffset, flipDirection);
         SpawnInLevelDataObject(yOffset, flipDirection, levelInfoObj);
-        SpawnInObject(yOffset, flipDirection, NFTChestObj);
+        //SpawnInObject(yOffset, flipDirection, NFTChestObj);
+        SpawnNFTChest(yOffset, flipDirection);
         //SpawnRandomObjects(yOffset, flipDirection);
 
     }
+
     //Currently disabled, spawn given objects randomly around the level
     private void SpawnRandomObjects(float yOffset, float flipDirection)
     {
@@ -394,7 +398,22 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-
+    private void SpawnNFTChest(float yOffset, float flipDirection)
+    {
+        int num = Random.Range(0, NumEdgePieces.Count);
+        Cell cell = NumEdgePieces[num];
+        playerStartCoord = new Vector3(NumEdgePieces[num].position.x * offset, 0.5f, ((NumEdgePieces[num].position.y * flipDirection) + yOffset) * offset);
+        if (cell.objectInTile != null)
+        {
+            SpawnNFTChest(yOffset, flipDirection);
+        }
+        else
+        {
+            GameObject NewSpawnedobject = Instantiate(NFTChestObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
+            NewSpawnedobject.transform.SetParent(worldGrp.transform);
+            cell.AddTileData(NewSpawnedobject);
+        }
+    }
     private void SpawnInObject(float yOffset, float flipDirection, GameObject objectToSpawn)
     {
         int n = Random.Range(0, ListOfTiles.Count);
@@ -417,14 +436,6 @@ public class GridManager : MonoBehaviour
                 GameObject NewSpawnedobject = Instantiate(objectToSpawn, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
                 NewSpawnedobject.transform.SetParent(worldGrp.transform);
                 cell.AddTileData(NewSpawnedobject);
-                try
-                {
-                    NewSpawnedobject.GetComponentInChildren<NFTChest>().CheckIfWallInFront();
-                }
-                catch
-                {
-                    print("Not NFTChest script");
-                }
             }
         }
     }
@@ -459,6 +470,10 @@ public class GridManager : MonoBehaviour
         if(tileData.type == PieceType.Deadend)
         {
             SpawnLocations.Add(tileData);
+        }
+        if(tileData.type == PieceType.Edge)
+        {
+            NumEdgePieces.Add(cell);
         }
         tileData.rotation = tileCalculator.Rotation;
         tileData.isRound = isRound;

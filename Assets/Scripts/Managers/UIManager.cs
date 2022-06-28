@@ -54,22 +54,26 @@ public class UIManager : MonoBehaviour
             ResumeGame();
         }
     }
+    [SerializeField] private bool testingMode = false;
     private void Start()
     {
-        if(StoreUserID.instance.isLoggedin == true)
+        if (testingMode)
         {
-            userIcon.SetActive(true);
-        }
-        else if (StoreUserID.instance.isLoggedin == false)
-        {
-            userIcon.SetActive(false);
-        }
-        print("Storing values");
-        print(StoreUserID.instance.userID);
-        userID = StoreUserID.instance.userID;
+            if (StoreUserID.instance.isLoggedin == true)
+            {
+                userIcon.SetActive(true);
+            }
+            else if (StoreUserID.instance.isLoggedin == false)
+            {
+                userIcon.SetActive(false);
+            }
+            print("Storing values");
+            print(StoreUserID.instance.userID);
+            userID = StoreUserID.instance.userID;
 
-        print("User ID " + userID);
-        userIDText.text = userID;
+            print("User ID " + userID);
+            userIDText.text = userID;
+        }
     }
     private void Update()
     {
