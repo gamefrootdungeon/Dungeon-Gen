@@ -381,6 +381,7 @@ public class GridManager : MonoBehaviour
     }
     private void SpawnInLevelDataObject(float yOffset, float flipDirection, GameObject objectToSpawn)
     {
+
         int n = Random.Range(0, ListOfTiles.Count);
         Cell cell = ListOfTiles[n];
         if (cell.objectInTile != null)
@@ -405,7 +406,22 @@ public class GridManager : MonoBehaviour
     }
     private void SpawnInfoDesk(float yOffset, float flipDirection)
     {
-        int num = Random.Range(0, NumEdgePieces.Count);
+        List<Cell> templist = NumEdgePieces;
+        bool hasSpawned = false;
+        int num = 0;
+        while (hasSpawned == false)
+        {
+            num = Random.Range(0, templist.Count);
+            if(templist[num].roomNumber == playerStatingRoomNumber)
+            {
+                hasSpawned = true;
+            }
+            else
+            {
+                templist.RemoveAt(num);
+            }
+        }
+        
         Cell cell = NumEdgePieces[num];
         playerStartCoord = new Vector3(NumEdgePieces[num].position.x * offset, 0.5f, ((NumEdgePieces[num].position.y * flipDirection) + yOffset) * offset);
         if (cell.objectInTile != null)
