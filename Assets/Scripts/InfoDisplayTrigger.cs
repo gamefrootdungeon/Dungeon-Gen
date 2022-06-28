@@ -9,13 +9,38 @@ public class InfoDisplayTrigger : MonoBehaviour
     private infoTag tag;
     private string info1;
     private string info2;
+
+    Vector3 rayStart;
+    Vector3 direction;
+    private bool wallCheck = false;
     private void Start()
     {
         gridManager = FindObjectOfType<GridManager>();
         uIManager = FindObjectOfType<UIManager>();
     }
 
+    private void Update()
+    {
+        if (wallCheck == false)
+        {
+            direction = Vector3.zero;
+            rayStart = Vector3.zero;
 
+            RaycastHit hit;
+            rayStart = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+            direction = -transform.forward * 3;
+
+            if (!Physics.Raycast(rayStart, direction, 3))
+            {
+                transform.Rotate(transform.up * 90);
+            }
+            else
+            {
+                wallCheck = true;
+            }
+
+        }
+    }
     public void SetUpInfo(string info1, string info2,infoTag Tag)
     {
         this.tag = Tag;

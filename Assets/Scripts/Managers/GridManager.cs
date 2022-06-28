@@ -65,6 +65,9 @@ public class GridManager : MonoBehaviour
     //When add to the array group in the tile prefab remeber to change this number to match the size
     public int NumberOfDifferentRoomTypes;
     public Dictionary<int, int> roomType = new Dictionary<int, int>();
+
+    private Vector2Int playerStartGrid;
+    private int playerStatingRoomNumber;
     public void Start()
     {
         CheckWhatPlayerType();
@@ -358,9 +361,11 @@ public class GridManager : MonoBehaviour
         }
         print("Tiles spawned ");
         SetPlayerSpawn(yOffset, flipDirection);
-        SpawnInLevelDataObject(yOffset, flipDirection, levelInfoObj);
+        //SpawnInLevelDataObject(yOffset, flipDirection, levelInfoObj);
         //SpawnInObject(yOffset, flipDirection, NFTChestObj);
+        FigureOutPlayerStartingRoomNumber();
         SpawnNFTChest(yOffset, flipDirection);
+        SpawnInfoDesk(yOffset, flipDirection);
         //SpawnRandomObjects(yOffset, flipDirection);
 
     }
@@ -396,6 +401,24 @@ public class GridManager : MonoBehaviour
                 NewSpawnedobject.transform.SetParent(worldGrp.transform);
                 cell.AddTileData(NewSpawnedobject);
             }
+        }
+    }
+    private void SpawnInfoDesk(float yOffset, float flipDirection)
+    {
+        int num = Random.Range(0, NumEdgePieces.Count);
+        Cell cell = NumEdgePieces[num];
+        playerStartCoord = new Vector3(NumEdgePieces[num].position.x * offset, 0.5f, ((NumEdgePieces[num].position.y * flipDirection) + yOffset) * offset);
+        if (cell.objectInTile != null)
+        {
+            SpawnNFTChest(yOffset, flipDirection);
+        }
+        else
+        {
+            GameObject NewSpawnedobject = Instantiate(levelInfoObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
+            NewSpawnedobject.transform.SetParent(worldGrp.transform);
+            cell.AddTileData(NewSpawnedobject);
+            grid[(int)NumEdgePieces[num].position.x, (int)NumEdgePieces[num].position.y].AddTileData(NewSpawnedobject);
+            NumEdgePieces.Remove(cell);
         }
     }
     private void SpawnNFTChest(float yOffset, float flipDirection)
@@ -441,11 +464,36 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-    
+
+    private void FigureOutPlayerStartingRoomNumber()
+    {
+        print("room numbers around player");
+        if (grid[playerStartGrid.x + 1, playerStartGrid.y].content == Contents.Tile)
+        {
+            print(grid[playerStartGrid.x + 1, playerStartGrid.y].roomNumber);
+            playerStatingRoomNumber = grid[playerStartGrid.x + 1, playerStartGrid.y].roomNumber;
+        }
+        if (grid[playerStartGrid.x - 1, playerStartGrid.y].content == Contents.Tile)
+        {
+            print(grid[playerStartGrid.x - 1, playerStartGrid.y].roomNumber);
+            playerStatingRoomNumber = grid[playerStartGrid.x - 1, playerStartGrid.y].roomNumber;
+        }
+        if (grid[playerStartGrid.x, playerStartGrid.y + 1].content == Contents.Tile)
+        {
+            print(grid[playerStartGrid.x, playerStartGrid.y + 1].roomNumber);
+            playerStatingRoomNumber = grid[playerStartGrid.x, playerStartGrid.y + 1].roomNumber;
+        }
+        if (grid[playerStartGrid.x, playerStartGrid.y - 1].content == Contents.Tile)
+        {
+            print(grid[playerStartGrid.x, playerStartGrid.y - 1].roomNumber);
+            playerStatingRoomNumber = grid[playerStartGrid.x, playerStartGrid.y - 1].roomNumber;
+        }
+    }
 
     private void SetPlayerSpawn(float yOffset, float flipDirection)
     {
         int num = Random.Range(0, SpawnLocations.Count);
+        playerStartGrid = new Vector2Int((int)SpawnLocations[num].tilePosition.x, (int)SpawnLocations[num].tilePosition.y);
         playerStartCoord = new Vector3(SpawnLocations[num].tilePosition.x * offset, 0.5f, ((SpawnLocations[num].tilePosition.y * flipDirection) + yOffset) * offset);
 
     }

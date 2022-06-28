@@ -20,7 +20,7 @@ public class Cell
     public GameObject objectInTile;
     public int prefabNumber = -1;
 
-    public int roomNumber;
+    public int roomNumber = -1;
     public int roomWidth;
     public int roomLength;
 
