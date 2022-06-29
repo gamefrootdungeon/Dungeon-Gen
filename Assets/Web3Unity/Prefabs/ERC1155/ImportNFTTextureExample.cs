@@ -19,6 +19,7 @@ public class ImportNFTTextureExample : MonoBehaviour
 
         // fetch uri from chain
         string uri = await ERC1155.URI(chain, network, contract, tokenId);
+        //string hardUri = "https://gateway.pinata.cloud/ipfs/QmXanaRjCUuvLi6Le2wKsMaxTsYWjv5WbXkvpeqQ51hXT6";
         print("uri: " + uri);
 
         // fetch json from uri
@@ -34,5 +35,6 @@ public class ImportNFTTextureExample : MonoBehaviour
         UnityWebRequest textureRequest = UnityWebRequestTexture.GetTexture(imageUri);
         await textureRequest.SendWebRequest();
         this.gameObject.GetComponent<Renderer>().material.mainTexture = ((DownloadHandlerTexture)textureRequest.downloadHandler).texture;
+        //https://gateway.pinata.cloud/ipfs/QmXanaRjCUuvLi6Le2wKsMaxTsYWjv5WbXkvpeqQ51hXT6
     }
 }

@@ -6,6 +6,7 @@ public class StoreUserID : MonoBehaviour
 {
     public string userID ="";
     public bool isLoggedin = false;
+    public string response = "";
     public static StoreUserID instance;
     void Awake()
     {

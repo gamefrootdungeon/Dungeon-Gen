@@ -37,6 +37,12 @@ public class WebLogin : MonoBehaviour
         StoreUserID.instance.userID = account;
         StoreUserID.instance.isLoggedin = true;
         // reset login message
+        string chain = "ethereum";
+        string network = "rinkeby"; // mainnet ropsten kovan rinkeby goerli
+        string contract = "";
+        string response = await EVM.AllErc721(chain, network, account, contract);
+        StoreUserID.instance.response = response;
+        print("response " + response);
         SetConnectAccount("");
         // load next scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
