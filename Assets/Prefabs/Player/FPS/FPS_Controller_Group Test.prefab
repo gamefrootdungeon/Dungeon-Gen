@@ -584,7 +584,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7049531162817639507}
   m_Layer: 0
-  m_Name: FPS_Controller_Group
+  m_Name: FPS_Controller_Group Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

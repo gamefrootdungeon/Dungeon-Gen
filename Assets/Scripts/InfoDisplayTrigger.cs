@@ -7,8 +7,8 @@ public class InfoDisplayTrigger : MonoBehaviour
     [SerializeField] private GridManager gridManager;
     [SerializeField] private UIManager uIManager;
     private infoTag tag;
-    private string info1;
-    private string info2;
+    [SerializeField]private string info1;
+    [SerializeField]private string info2;
 
     Vector3 rayStart;
     Vector3 direction;
@@ -36,10 +36,11 @@ public class InfoDisplayTrigger : MonoBehaviour
             }
             else
             {
+                //this.transform.position -= transform.forward * 1.5f;
                 wallCheck = true;
             }
-
         }
+
     }
     public void SetUpInfo(string info1, string info2,infoTag Tag)
     {

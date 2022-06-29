@@ -371,39 +371,39 @@ public class GridManager : MonoBehaviour
     }
 
     //Currently disabled, spawn given objects randomly around the level
-    private void SpawnRandomObjects(float yOffset, float flipDirection)
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            SpawnInObject(yOffset, flipDirection, PotAObj);
-            SpawnInObject(yOffset, flipDirection, SkeletonOnGroundObj);
-        }
-    }
-    private void SpawnInLevelDataObject(float yOffset, float flipDirection, GameObject objectToSpawn)
-    {
+    //private void SpawnRandomObjects(float yOffset, float flipDirection)
+    //{
+    //    for (int i = 0; i < 5; i++)
+    //    {
+    //        SpawnInObject(yOffset, flipDirection, PotAObj);
+    //        SpawnInObject(yOffset, flipDirection, SkeletonOnGroundObj);
+    //    }
+    //}
+    //private void SpawnInLevelDataObject(float yOffset, float flipDirection, GameObject objectToSpawn)
+    //{
 
-        int n = Random.Range(0, ListOfTiles.Count);
-        Cell cell = ListOfTiles[n];
-        if (cell.objectInTile != null)
-        {
-            SpawnInLevelDataObject(yOffset, flipDirection, objectToSpawn);
-        }
-        else
-        {
-            //Checking to see if given cell position in on a doorway piece, recalls the method and creates another random number if is on one
-            if (cell.pieceType == PieceType.Doorway || cell.pieceType == PieceType.DoorwayLeftCorner || cell.pieceType == PieceType.DoorwayRightCorner)
-            {
-                SpawnInLevelDataObject(yOffset, flipDirection, objectToSpawn);
-            }
-            else
-            {
-                GameObject NewSpawnedobject = Instantiate(objectToSpawn, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
-                NewSpawnedobject.GetComponent<InfoDisplayTrigger>().SetUpInfo(title, story, infoTag.LevelDisplay);
-                NewSpawnedobject.transform.SetParent(worldGrp.transform);
-                cell.AddTileData(NewSpawnedobject);
-            }
-        }
-    }
+    //    int n = Random.Range(0, ListOfTiles.Count);
+    //    Cell cell = ListOfTiles[n];
+    //    if (cell.objectInTile != null)
+    //    {
+    //        SpawnInLevelDataObject(yOffset, flipDirection, objectToSpawn);
+    //    }
+    //    else
+    //    {
+    //        //Checking to see if given cell position in on a doorway piece, recalls the method and creates another random number if is on one
+    //        if (cell.pieceType == PieceType.Doorway || cell.pieceType == PieceType.DoorwayLeftCorner || cell.pieceType == PieceType.DoorwayRightCorner)
+    //        {
+    //            SpawnInLevelDataObject(yOffset, flipDirection, objectToSpawn);
+    //        }
+    //        else
+    //        {
+    //            GameObject NewSpawnedobject = Instantiate(objectToSpawn, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
+    //            NewSpawnedobject.GetComponent<InfoDisplayTrigger>().SetUpInfo(title, story, infoTag.LevelDisplay);
+    //            NewSpawnedobject.transform.SetParent(worldGrp.transform);
+    //            cell.AddTileData(NewSpawnedobject);
+    //        }
+    //    }
+    //}
     private void SpawnInfoDesk(float yOffset, float flipDirection)
     {
         List<Cell> templist = NumEdgePieces;
@@ -423,14 +423,14 @@ public class GridManager : MonoBehaviour
         }
         
         Cell cell = NumEdgePieces[num];
-        playerStartCoord = new Vector3(NumEdgePieces[num].position.x * offset, 0.5f, ((NumEdgePieces[num].position.y * flipDirection) + yOffset) * offset);
         if (cell.objectInTile != null)
         {
-            SpawnNFTChest(yOffset, flipDirection);
+            SpawnInfoDesk(yOffset, flipDirection);
         }
         else
         {
             GameObject NewSpawnedobject = Instantiate(levelInfoObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
+            NewSpawnedobject.GetComponent<InfoDisplayTrigger>().SetUpInfo(title, story, infoTag.LevelDisplay);
             NewSpawnedobject.transform.SetParent(worldGrp.transform);
             cell.AddTileData(NewSpawnedobject);
             grid[(int)NumEdgePieces[num].position.x, (int)NumEdgePieces[num].position.y].AddTileData(NewSpawnedobject);
@@ -441,7 +441,6 @@ public class GridManager : MonoBehaviour
     {
         int num = Random.Range(0, NumEdgePieces.Count);
         Cell cell = NumEdgePieces[num];
-        playerStartCoord = new Vector3(NumEdgePieces[num].position.x * offset, 0.5f, ((NumEdgePieces[num].position.y * flipDirection) + yOffset) * offset);
         if (cell.objectInTile != null)
         {
             SpawnNFTChest(yOffset, flipDirection);
@@ -455,31 +454,31 @@ public class GridManager : MonoBehaviour
             NumEdgePieces.Remove(cell);
         }
     }
-    private void SpawnInObject(float yOffset, float flipDirection, GameObject objectToSpawn)
-    {
-        int n = Random.Range(0, ListOfTiles.Count);
-        Cell cell = ListOfTiles[n];
-        if(cell.objectInTile != null)
-        {
-            SpawnInObject(yOffset, flipDirection, objectToSpawn);
-        }
-        else
-        {
-            if (cell.pieceType == PieceType.Doorway ||
-                cell.pieceType == PieceType.DoorwayLeftCorner ||
-                cell.pieceType == PieceType.DoorwayRightCorner ||
-                cell.pieceType == PieceType.Hallway)
-            {
-                SpawnInObject(yOffset, flipDirection, objectToSpawn);
-            }
-            else
-            {
-                GameObject NewSpawnedobject = Instantiate(objectToSpawn, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
-                NewSpawnedobject.transform.SetParent(worldGrp.transform);
-                cell.AddTileData(NewSpawnedobject);
-            }
-        }
-    }
+    //private void SpawnInObject(float yOffset, float flipDirection, GameObject objectToSpawn)
+    //{
+    //    int n = Random.Range(0, ListOfTiles.Count);
+    //    Cell cell = ListOfTiles[n];
+    //    if(cell.objectInTile != null)
+    //    {
+    //        SpawnInObject(yOffset, flipDirection, objectToSpawn);
+    //    }
+    //    else
+    //    {
+    //        if (cell.pieceType == PieceType.Doorway ||
+    //            cell.pieceType == PieceType.DoorwayLeftCorner ||
+    //            cell.pieceType == PieceType.DoorwayRightCorner ||
+    //            cell.pieceType == PieceType.Hallway)
+    //        {
+    //            SpawnInObject(yOffset, flipDirection, objectToSpawn);
+    //        }
+    //        else
+    //        {
+    //            GameObject NewSpawnedobject = Instantiate(objectToSpawn, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
+    //            NewSpawnedobject.transform.SetParent(worldGrp.transform);
+    //            cell.AddTileData(NewSpawnedobject);
+    //        }
+    //    }
+    //}
 
     private void FigureOutPlayerStartingRoomNumber()
     {
@@ -549,7 +548,7 @@ public class GridManager : MonoBehaviour
         tileData.Initialize(cell, (roomType[cell.roomNumber]));
         //tileData.Initialize(cell);
         cell.pieceType = tileData.type;
-
+        //tileData.CheckAdjacentTiles(cell, grid[(int)cell.position.x +1, (int)cell.position.y],grid[(int)cell.position.x - 1, (int)cell.position.y],grid[(int)cell.position.x, (int)cell.position.y + 1],grid[(int)cell.position.x, (int)cell.position.y - 1]);
         ListOfTiles.Add(cell);
     }
     #region Debugging

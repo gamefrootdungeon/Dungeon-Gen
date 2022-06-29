@@ -16,6 +16,7 @@ public class ConvertFromJsonToGridClass
         public Vector2 position;
         public float rotation;
         public GameObject tilePiece;
+        public int prefabNumber;
 
         public int roomNumber;
         public int roomWidth;
