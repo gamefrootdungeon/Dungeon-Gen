@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8611620813076045746}
   - component: {fileID: 5071171439494377613}
   m_Layer: 5
-  m_Name: TestLevelInfo
+  m_Name: LevelInfoDesk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
