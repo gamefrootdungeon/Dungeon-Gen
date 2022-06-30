@@ -51,99 +51,100 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomPrefabs:
   - SquareEmptyPieceGroup:
-    - {fileID: 2218850203076338501, guid: 69b98c65b141d44429189b74f218e9c0, type: 3}
-    - {fileID: 2218850203076338501, guid: b829cbcedcb6aec4da015cca9387582e, type: 3}
-    - {fileID: 2218850203076338501, guid: adf6a12490a069242a24f476c87dc78f, type: 3}
+    - {fileID: 2218850203076338501, guid: fa7e94e57cd279344b8e0aa828b9c1cf, type: 3}
+    - {fileID: 2218850203076338501, guid: f87a5df3929ead548804e99c2d95e70a, type: 3}
+    - {fileID: 2218850203076338501, guid: 042a068ad03337849b43cf888e5b0ccd, type: 3}
+    - {fileID: 2218850203076338501, guid: fa7e94e57cd279344b8e0aa828b9c1cf, type: 3}
+    - {fileID: 2218850203076338501, guid: f87a5df3929ead548804e99c2d95e70a, type: 3}
+    - {fileID: 2218850203076338501, guid: 042a068ad03337849b43cf888e5b0ccd, type: 3}
     SquareEdgePieceGroup:
-    - {fileID: 2218850203076338501, guid: b502f9a18ccced844a73808e755e02f4, type: 3}
-    - {fileID: 4344162390122016061, guid: b294d6602745d3845a74f13ceee088c3, type: 3}
-    - {fileID: 2940402828786478787, guid: 45d2cda051528ab43b6dfaeac7a05bf8, type: 3}
-    - {fileID: 2172076742605672583, guid: dffa64aa60417f64db4383119962117d, type: 3}
-    - {fileID: 2918706915897240575, guid: 9ed56303bf144a64c99e19bb01e663ea, type: 3}
-    - {fileID: 1036176805022278297, guid: b860fb963f0d4534caab6abadbe41e43, type: 3}
+    - {fileID: 2218850203076338501, guid: a37c9014d262931489832bb5d0b6b7d0, type: 3}
+    - {fileID: 4344162390122016061, guid: 27c53b5ad25341b4e975f6aaa573765f, type: 3}
+    - {fileID: 2940402828786478787, guid: 64e291bac04e4d44eba1005063cac1f7, type: 3}
+    - {fileID: 2172076742605672583, guid: 2e4c0081134355a49aa1282f081a9d79, type: 3}
+    - {fileID: 2918706915897240575, guid: 60ed141a8fd3799459e86f3c020195fd, type: 3}
+    - {fileID: 1036176805022278297, guid: d9afd710b4b8d41408971fcab66db296, type: 3}
     SquareCornerPieceGroup:
-    - {fileID: 2218850203076338501, guid: 0c34eb00ffe2e8543962afaaac1786b9, type: 3}
+    - {fileID: 2218850203076338501, guid: 5ff6d73eeae9b36468f43d2c7638f926, type: 3}
     SquareHallwayPieceGroup:
-    - {fileID: 2218850203076338501, guid: b7223b198b88fc649845bf4d6536451d, type: 3}
+    - {fileID: 2218850203076338501, guid: 3e700173f9d0fff43b0da89765cae5ab, type: 3}
     SquareDoorwayPieceGroup:
     - {fileID: 2218850203076338501, guid: 9019355acbc49c14e8d8cddfeffb2133, type: 3}
     SquareDoorwayLeftCornerPieceGroup:
-    - {fileID: 2218850203076338501, guid: 3c29be447fdc72b4b88ba666e4838cad, type: 3}
+    - {fileID: 2218850203076338501, guid: 33fba569b135a6a469ce468cc3722300, type: 3}
     SquareDoorwayRightCornerPieceGroup:
-    - {fileID: 2218850203076338501, guid: b17d3fabcbf1c954c82b81b4f22b1a5e, type: 3}
+    - {fileID: 2218850203076338501, guid: 46ab4677ef4666f4e9e04b9eaec48818, type: 3}
     SquareDeadendPieceGroup:
-    - {fileID: 2218850203076338501, guid: dc83ba78732cd6f45957a7d3c108b2c0, type: 3}
+    - {fileID: 2218850203076338501, guid: efe225446e18dee4f8f6a359bb9d4cdb, type: 3}
   - SquareEmptyPieceGroup:
-    - {fileID: 5812946967634903580, guid: 74342fc0d6e1be54cbc4392e62e38d2f, type: 3}
-    - {fileID: 153871014551926949, guid: c9c28fae777e547499885a68847cf979, type: 3}
-    - {fileID: 3762072796562352455, guid: fffc5ae85b345d9489920c0bed829b19, type: 3}
-    - {fileID: 2218850203076338501, guid: c30e94f6bdb74dd438b9b8b9b780c7a6, type: 3}
-    - {fileID: 2218850203076338501, guid: e3500d9414e53884c8946b5fad0b8fd8, type: 3}
-    - {fileID: 2218850203076338501, guid: 80b98095a6de1ca469b966fa0ec92bb3, type: 3}
+    - {fileID: 2218850203076338501, guid: fa7e94e57cd279344b8e0aa828b9c1cf, type: 3}
+    - {fileID: 2218850203076338501, guid: f87a5df3929ead548804e99c2d95e70a, type: 3}
+    - {fileID: 2218850203076338501, guid: 042a068ad03337849b43cf888e5b0ccd, type: 3}
+    - {fileID: 2218850203076338501, guid: e1341cbe1a655cd479db7016a705da42, type: 3}
+    - {fileID: 2218850203076338501, guid: 3be0fd67c8f1cbb4b878e994155acc84, type: 3}
     SquareEdgePieceGroup:
-    - {fileID: 165275512275624049, guid: da776ae4a8df3d943a5225f081ed5b21, type: 3}
-    - {fileID: 165275512275624049, guid: a757ac92bc21f384b9c1f8d43718272b, type: 3}
-    - {fileID: 165275512275624049, guid: 9cf6d38dec152514296593fd9f4af597, type: 3}
-    - {fileID: 165275512275624049, guid: a0f7302993a49e2448ae1db7f378984d, type: 3}
-    - {fileID: 165275512275624049, guid: 0e62a395af22dc64fb1b982301c8bde7, type: 3}
-    - {fileID: 165275512275624049, guid: 087a2cef6d2100c479adef855aeb9cde, type: 3}
-    - {fileID: 6651654323285385662, guid: 44f4fab6e8d54294988f0904c71560ff, type: 3}
-    - {fileID: 6651654323285385662, guid: ade47c75d9c3953499c897f02d128653, type: 3}
-    - {fileID: 4154997883861525346, guid: a3683a095d2ae6149ab492f0be0546ab, type: 3}
-    - {fileID: 4154997883861525346, guid: 0aacbab5494636b4780a32a4ee7d27ba, type: 3}
-    - {fileID: 2218850203076338501, guid: a517258a354760d4397d89a51f53968a, type: 3}
-    - {fileID: 4344162390122016061, guid: 0d10f811547cb4e49a06866b67f00f5a, type: 3}
-    - {fileID: 2940402828786478787, guid: 9d53d8e7731e7c248b62d2c070f4691e, type: 3}
-    - {fileID: 2172076742605672583, guid: 60aa64c44fa1da44eb5b6b18835778de, type: 3}
-    - {fileID: 2918706915897240575, guid: eae286e460980424bb9e0d2531f58c92, type: 3}
-    - {fileID: 1036176805022278297, guid: 6f2ecf1e5ff2c494dac07915e94ccde8, type: 3}
+    - {fileID: 2218850203076338501, guid: a37c9014d262931489832bb5d0b6b7d0, type: 3}
+    - {fileID: 4344162390122016061, guid: 27c53b5ad25341b4e975f6aaa573765f, type: 3}
+    - {fileID: 2940402828786478787, guid: 64e291bac04e4d44eba1005063cac1f7, type: 3}
+    - {fileID: 2172076742605672583, guid: 2e4c0081134355a49aa1282f081a9d79, type: 3}
+    - {fileID: 2918706915897240575, guid: 60ed141a8fd3799459e86f3c020195fd, type: 3}
+    - {fileID: 1036176805022278297, guid: d9afd710b4b8d41408971fcab66db296, type: 3}
+    - {fileID: 2682146399415529056, guid: e6b8d42a9c089e74782e285f6b179c21, type: 3}
+    - {fileID: 2682146399415529056, guid: 4b351f58a67910248b07de8d653c0507, type: 3}
+    - {fileID: 2682146399415529056, guid: 67d51c4fa6c7bf54bb5e6b45ad8260ad, type: 3}
+    - {fileID: 2682146399415529056, guid: d4bc59f3c283052409e4c96bddfe7a9b, type: 3}
+    - {fileID: 2682146399415529056, guid: 62b0008213709014885600e0ff9ce52c, type: 3}
+    - {fileID: 2682146399415529056, guid: 7e65fa3789b7b9d479f53493065bd183, type: 3}
+    - {fileID: 8180304048364418852, guid: 75e2bc4757759484d98a2399a50aa1bb, type: 3}
+    - {fileID: 8180304048364418852, guid: b6569b35eb157894190d7369c689bdc4, type: 3}
     SquareCornerPieceGroup:
-    - {fileID: 2218850203076338501, guid: 0c34eb00ffe2e8543962afaaac1786b9, type: 3}
+    - {fileID: 2218850203076338501, guid: 5ff6d73eeae9b36468f43d2c7638f926, type: 3}
     SquareHallwayPieceGroup:
-    - {fileID: 2218850203076338501, guid: b7223b198b88fc649845bf4d6536451d, type: 3}
+    - {fileID: 2218850203076338501, guid: 3e700173f9d0fff43b0da89765cae5ab, type: 3}
     SquareDoorwayPieceGroup:
     - {fileID: 2218850203076338501, guid: 9019355acbc49c14e8d8cddfeffb2133, type: 3}
     SquareDoorwayLeftCornerPieceGroup:
-    - {fileID: 2218850203076338501, guid: 3c29be447fdc72b4b88ba666e4838cad, type: 3}
+    - {fileID: 2218850203076338501, guid: 33fba569b135a6a469ce468cc3722300, type: 3}
     SquareDoorwayRightCornerPieceGroup:
-    - {fileID: 2218850203076338501, guid: b17d3fabcbf1c954c82b81b4f22b1a5e, type: 3}
+    - {fileID: 2218850203076338501, guid: 46ab4677ef4666f4e9e04b9eaec48818, type: 3}
     SquareDeadendPieceGroup:
-    - {fileID: 2218850203076338501, guid: dc83ba78732cd6f45957a7d3c108b2c0, type: 3}
+    - {fileID: 2218850203076338501, guid: efe225446e18dee4f8f6a359bb9d4cdb, type: 3}
   - SquareEmptyPieceGroup:
-    - {fileID: 2218850203076338501, guid: f0a3fb6bec0287a4697260cbbf74fdb8, type: 3}
-    - {fileID: 2218850203076338501, guid: b4f6f620a36025f49bc507d642e6064d, type: 3}
-    - {fileID: 2218850203076338501, guid: b67a4a44cadc7074a82eb4e91ed9fffa, type: 3}
-    - {fileID: 2218850203076338501, guid: 0812c70fcfc4e214da5a591132be26e3, type: 3}
-    - {fileID: 2218850203076338501, guid: 1fee6b91aa4231440a44f3c44963db65, type: 3}
+    - {fileID: 2218850203076338501, guid: fa7e94e57cd279344b8e0aa828b9c1cf, type: 3}
+    - {fileID: 2218850203076338501, guid: f87a5df3929ead548804e99c2d95e70a, type: 3}
+    - {fileID: 2218850203076338501, guid: 042a068ad03337849b43cf888e5b0ccd, type: 3}
+    - {fileID: 5812946967634903580, guid: 07d617db4e32ead4a81d6f09f86c6d95, type: 3}
+    - {fileID: 153871014551926949, guid: 5baa0c35a61acb94c9d3a6bf599f6f8a, type: 3}
+    - {fileID: 3762072796562352455, guid: e42ad369e474cbb448db9c51fd48d4ab, type: 3}
     SquareEdgePieceGroup:
-    - {fileID: 2682146399415529056, guid: a4983cc8605fb724d971546fda86d501, type: 3}
-    - {fileID: 2682146399415529056, guid: 5c3dbed2d15f5ab459adceb5059ba70a, type: 3}
-    - {fileID: 2682146399415529056, guid: eb965f09613ff6546831c609a50095e6, type: 3}
-    - {fileID: 2682146399415529056, guid: b9f33c25d7bf15e4a9c98f6f4cbca1d5, type: 3}
-    - {fileID: 2682146399415529056, guid: 429c11c6f5a35c04897b5e7c8d558ef7, type: 3}
-    - {fileID: 2682146399415529056, guid: 178ed853eb89e9f4b982bf4ac00d83b3, type: 3}
-    - {fileID: 4154997883861525346, guid: d2569ab78118b23478081804966bc1df, type: 3}
-    - {fileID: 4154997883861525346, guid: 48f69e68622145545890d1cd0fd8bdfd, type: 3}
-    - {fileID: 8180304048364418852, guid: e71d244ad1888064498ec68a550da8e1, type: 3}
-    - {fileID: 8180304048364418852, guid: 7d3d508399ab86d4295623b2239a8900, type: 3}
-    - {fileID: 2218850203076338501, guid: 819faddc9762c98429e7cf48794bd5cc, type: 3}
-    - {fileID: 4344162390122016061, guid: ba516a8e463402549ae9acd55341e8d7, type: 3}
-    - {fileID: 2940402828786478787, guid: 3a466dadfb27d8240970a79f1c848343, type: 3}
-    - {fileID: 2172076742605672583, guid: 44ad52a4de2b32b43aaf42e7bebbc3e2, type: 3}
-    - {fileID: 2918706915897240575, guid: a5b92ca52fecacb408e41132d1a730fc, type: 3}
-    - {fileID: 1036176805022278297, guid: 641c2d80c8d4b124aa22171f7eb8ebb4, type: 3}
+    - {fileID: 2218850203076338501, guid: a37c9014d262931489832bb5d0b6b7d0, type: 3}
+    - {fileID: 4344162390122016061, guid: 27c53b5ad25341b4e975f6aaa573765f, type: 3}
+    - {fileID: 2940402828786478787, guid: 64e291bac04e4d44eba1005063cac1f7, type: 3}
+    - {fileID: 2172076742605672583, guid: 2e4c0081134355a49aa1282f081a9d79, type: 3}
+    - {fileID: 2918706915897240575, guid: 60ed141a8fd3799459e86f3c020195fd, type: 3}
+    - {fileID: 1036176805022278297, guid: d9afd710b4b8d41408971fcab66db296, type: 3}
+    - {fileID: 165275512275624049, guid: 42dc52bda0dd7a146879f4031f526c42, type: 3}
+    - {fileID: 165275512275624049, guid: a3f35d4c80574ef409e48561b779537d, type: 3}
+    - {fileID: 165275512275624049, guid: 9080dc4a923de8b4eb5636c0c1e4f09f, type: 3}
+    - {fileID: 165275512275624049, guid: bc29a60fd8e06ea4894657f04fa41154, type: 3}
+    - {fileID: 165275512275624049, guid: aaf6785e5430cc040ab667713d3f3fb2, type: 3}
+    - {fileID: 165275512275624049, guid: ec10f53ab004fb44dac477404ae909a8, type: 3}
+    - {fileID: 6651654323285385662, guid: 513e8f3f2c0d1934ea55c5028de46e4c, type: 3}
+    - {fileID: 6651654323285385662, guid: 29ebd5aa1cc1da14ca8bdef6c48c31cc, type: 3}
+    - {fileID: 4154997883861525346, guid: 8f6b7e90dc93c564d8e9e9760b824244, type: 3}
+    - {fileID: 4154997883861525346, guid: c8485cc6903a648448b53908fade06ef, type: 3}
     SquareCornerPieceGroup:
-    - {fileID: 2218850203076338501, guid: bd8e0d288b41ef24a8018fa0f6104026, type: 3}
+    - {fileID: 2218850203076338501, guid: 5ff6d73eeae9b36468f43d2c7638f926, type: 3}
     SquareHallwayPieceGroup:
-    - {fileID: 2218850203076338501, guid: 3f99700950ffc0a46b003f7415d587e8, type: 3}
+    - {fileID: 2218850203076338501, guid: 3e700173f9d0fff43b0da89765cae5ab, type: 3}
     SquareDoorwayPieceGroup:
-    - {fileID: 2218850203076338501, guid: cb1016ca62a5ff74aa2d37101f17947e, type: 3}
+    - {fileID: 2218850203076338501, guid: 9019355acbc49c14e8d8cddfeffb2133, type: 3}
     SquareDoorwayLeftCornerPieceGroup:
-    - {fileID: 2218850203076338501, guid: a3826218d23a9824d8fc9f13f1a45627, type: 3}
+    - {fileID: 2218850203076338501, guid: 33fba569b135a6a469ce468cc3722300, type: 3}
     SquareDoorwayRightCornerPieceGroup:
-    - {fileID: 2218850203076338501, guid: c9a5bbcc2669e134b8a929e972b55e59, type: 3}
+    - {fileID: 2218850203076338501, guid: 46ab4677ef4666f4e9e04b9eaec48818, type: 3}
     SquareDeadendPieceGroup:
-    - {fileID: 2218850203076338501, guid: f76a740ffef7d064cad7e6030ff02e6e, type: 3}
+    - {fileID: 2218850203076338501, guid: efe225446e18dee4f8f6a359bb9d4cdb, type: 3}
   type: 0
   SquareEmptyPieceGroup:
   - {fileID: 2218850203076338501, guid: b8a25be67a2055549bc4d8f745796288, type: 3}

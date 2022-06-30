@@ -17,6 +17,7 @@ public class Cell
     public Contents content = new Contents(); //This is to tell whether the cell is empty or has something in it
     public Vector2 position;
     public float rotation = 0;
+    public GameObject tileObject;
     public GameObject objectInTile;
     public int prefabNumber = -1;
 

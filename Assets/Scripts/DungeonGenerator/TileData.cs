@@ -48,7 +48,7 @@ public class TileData : MonoBehaviour
     private GameObject tileMesh;
     public GameObject nullObj;
 
-    private GameObject pieceToSpawn;
+    public GameObject pieceToSpawn;
     public float rotation = 0;
     //public int tileX;
     //public int tileY;
@@ -260,41 +260,71 @@ public class TileData : MonoBehaviour
     }
     public void CheckAdjacentTiles(Cell center, Cell cellxp1, Cell cellxm1, Cell cellyp1, Cell cellym1)
     {
-        if(center.pieceType == PieceType.Empty)
+        print("Check adjacent tiles");
+        bool pieceChecked = false;
+        List<int> bannedNumbers = new List<int>();
+        if (center.pieceType == PieceType.Empty)
         {
             List<GameObject> emptyPrefab = roomPrefabs[center.roomNumber].SquareEmptyPieceGroup;
-            if (cellxp1.roomNumber == center.roomNumber)
-                emptyPrefab.RemoveAt(cellxp1.roomNumber);
-            if (cellxm1.roomNumber == center.roomNumber)
-                emptyPrefab.RemoveAt(cellxm1.roomNumber);
-            if (cellyp1.roomNumber == center.roomNumber)
-                emptyPrefab.RemoveAt(cellyp1.roomNumber);
-            if (cellym1.roomNumber == center.roomNumber)
-                emptyPrefab.RemoveAt(cellym1.roomNumber);
-            int num = Random.Range(0, emptyPrefab.Count);
+            if(cellxp1 != null)
+                if (cellxp1.roomNumber == center.roomNumber)
+                    bannedNumbers.Add(cellxp1.roomNumber);
+            if(cellxm1 != null)
+                if (cellxm1.roomNumber == center.roomNumber)
+                    bannedNumbers.Add(cellxm1.roomNumber);
+            if(cellyp1 != null)
+                if (cellyp1.roomNumber == center.roomNumber)
+                    bannedNumbers.Add(cellyp1.roomNumber);
+            if(cellym1 != null)
+                if (cellym1.roomNumber == center.roomNumber)
+                    bannedNumbers.Add(cellym1.roomNumber);
+            int num = 0;
+            while (!pieceChecked)
+            {
+                num = Random.Range(0, emptyPrefab.Count);
+                if (bannedNumbers.Contains(num))
+                    return;
+
+                pieceChecked = true;
+            }
             pieceToSpawn = emptyPrefab[num];
             Destroy(tileMesh);
             tileMesh = Instantiate(pieceToSpawn, new Vector3(this.transform.position.x, 0, this.transform.position.z), Quaternion.Euler(0, rotation, 0)) as GameObject;
             tileMesh.transform.parent = this.transform;
-
         }
         else if (center.pieceType == PieceType.Edge)
         {
             List<GameObject> edgePrefab = roomPrefabs[center.roomNumber].SquareEdgePieceGroup;
-            if (cellxp1.roomNumber == center.roomNumber)
-                edgePrefab.RemoveAt(cellxp1.roomNumber);
-            if (cellxm1.roomNumber == center.roomNumber)
-                edgePrefab.RemoveAt(cellxm1.roomNumber);
-            if (cellyp1.roomNumber == center.roomNumber)
-                edgePrefab.RemoveAt(cellyp1.roomNumber);
-            if (cellym1.roomNumber == center.roomNumber)
-                edgePrefab.RemoveAt(cellym1.roomNumber);
-            int num = Random.Range(0, edgePrefab.Count);
+            if (cellxp1 != null)
+                if (cellxp1.roomNumber == center.roomNumber)
+                    bannedNumbers.Add(cellxp1.roomNumber);
+            if (cellxm1 != null)
+                if (cellxm1.roomNumber == center.roomNumber)
+                    bannedNumbers.Add(cellxm1.roomNumber);
+            if (cellyp1 != null)
+                if (cellyp1.roomNumber == center.roomNumber)
+                    bannedNumbers.Add(cellyp1.roomNumber);
+            if (cellym1 != null)
+                if (cellym1.roomNumber == center.roomNumber)
+                    bannedNumbers.Add(cellym1.roomNumber);
+            int num = 0;
+            while (!pieceChecked)
+            {
+                num = Random.Range(0, edgePrefab.Count);
+                if (bannedNumbers.Contains(num))
+                    return;
+
+                pieceChecked = true;
+            }
             pieceToSpawn = edgePrefab[num];
             Destroy(tileMesh);
             tileMesh = Instantiate(pieceToSpawn, new Vector3(this.transform.position.x, 0, this.transform.position.z), Quaternion.Euler(0, rotation, 0)) as GameObject;
             tileMesh.transform.parent = this.transform;
         }
+
+
+
+
     }
 }
 /*
@@ -393,3 +423,41 @@ pieceToSpawn = SquareEdgePiece;
 prefabNum = num3;
 break;
 */
+
+
+
+//if (center.pieceType == PieceType.Empty)
+//{
+//    List<GameObject> emptyPrefab = roomPrefabs[center.roomNumber].SquareEmptyPieceGroup;
+//    if (cellxp1.roomNumber == center.roomNumber)
+//        emptyPrefab.RemoveAt(cellxp1.roomNumber);
+//    if (cellxm1.roomNumber == center.roomNumber)
+//        emptyPrefab.RemoveAt(cellxm1.roomNumber);
+//    if (cellyp1.roomNumber == center.roomNumber)
+//        emptyPrefab.RemoveAt(cellyp1.roomNumber);
+//    if (cellym1.roomNumber == center.roomNumber)
+//        emptyPrefab.RemoveAt(cellym1.roomNumber);
+//    int num = Random.Range(0, emptyPrefab.Count);
+//    pieceToSpawn = emptyPrefab[num];
+//    Destroy(tileMesh);
+//    tileMesh = Instantiate(pieceToSpawn, new Vector3(this.transform.position.x, 0, this.transform.position.z), Quaternion.Euler(0, rotation, 0)) as GameObject;
+//    tileMesh.transform.parent = this.transform;
+
+//}
+//else if (center.pieceType == PieceType.Edge)
+//{
+//    List<GameObject> edgePrefab = roomPrefabs[center.roomNumber].SquareEdgePieceGroup;
+//    if (cellxp1.roomNumber == center.roomNumber)
+//        edgePrefab.RemoveAt(cellxp1.roomNumber);
+//    if (cellxm1.roomNumber == center.roomNumber)
+//        edgePrefab.RemoveAt(cellxm1.roomNumber);
+//    if (cellyp1.roomNumber == center.roomNumber)
+//        edgePrefab.RemoveAt(cellyp1.roomNumber);
+//    if (cellym1.roomNumber == center.roomNumber)
+//        edgePrefab.RemoveAt(cellym1.roomNumber);
+//    int num = Random.Range(0, edgePrefab.Count);
+//    pieceToSpawn = edgePrefab[num];
+//    Destroy(tileMesh);
+//    tileMesh = Instantiate(pieceToSpawn, new Vector3(this.transform.position.x, 0, this.transform.position.z), Quaternion.Euler(0, rotation, 0)) as GameObject;
+//    tileMesh.transform.parent = this.transform;
+//}

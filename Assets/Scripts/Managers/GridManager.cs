@@ -100,47 +100,122 @@ public class GridManager : MonoBehaviour
         try
         {
             ConvertFromJsonToGridClass data = JsonUtility.FromJson<ConvertFromJsonToGridClass>(asset);
-            JsonText = asset;
-            title = data.title;
-            story = data.story;
-
-            Grid1D = new Cell[data.grid.Length];
-            for (int i = 0; i < data.grid.Length; i++)
+            try
             {
-                if (!numberOfRooms.Contains(data.grid[i].roomNumber))
+                JsonText = asset;
+                title = data.title;
+                story = data.story;
+
+                Grid1D = new Cell[data.grid.Length];
+                for (int i = 0; i < data.grid.Length; i++)
                 {
-                    numberOfRooms.Add(data.grid[i].roomNumber);
-                    VisualizernumberOfRooms.Add((int)data.grid[i].roomNumber);  
+                    if (!numberOfRooms.Contains(data.grid[i].roomNumber))
+                    {
+                        numberOfRooms.Add(data.grid[i].roomNumber);
+                        VisualizernumberOfRooms.Add((int)data.grid[i].roomNumber);
+                    }
+                    Cell newCell = new Cell(data.grid[i].position.x, data.grid[i].position.y);
+                    newCell.pieceType = data.grid[i].pieceType;
+                    newCell.content = data.grid[i].content;
+                    newCell.position = data.grid[i].position;
+                    newCell.rotation = data.grid[i].rotation;
+                    newCell.objectInTile = data.grid[i].tilePiece;
+
+                    newCell.roomNumber = data.grid[i].roomNumber;
+                    newCell.roomWidth = data.grid[i].roomWidth;
+                    newCell.roomLength = data.grid[i].roomLength;
+
+                    newCell.tile = data.grid[i].tile;
+                    newCell.door = data.grid[i].door;
+                    newCell.note = data.grid[i].note;
+                    newCell.column = data.grid[i].column;
+                    newCell.water = data.grid[i].water;
+
+                    Grid1D[i] = newCell;
                 }
-                Cell newCell = new Cell(data.grid[i].position.x, data.grid[i].position.y);
-                newCell.pieceType = data.grid[i].pieceType;
-                newCell.content = data.grid[i].content;
-                newCell.position = data.grid[i].position;
-                newCell.rotation = data.grid[i].rotation;
-                newCell.objectInTile = data.grid[i].tilePiece;
-
-                newCell.roomNumber = data.grid[i].roomNumber;
-                newCell.roomWidth = data.grid[i].roomWidth;
-                newCell.roomLength = data.grid[i].roomLength;
-
-                newCell.tile = data.grid[i].tile;
-                newCell.door = data.grid[i].door;
-                newCell.note = data.grid[i].note;
-                newCell.column = data.grid[i].column;
-                newCell.water = data.grid[i].water;
-
-                Grid1D[i] = newCell;
+                FigureOutMinMax(Grid1D);
+                grid = new Cell[(int)max.x, (int)max.y];
+                ConvertTo2DArray(data);
+                SetUpRoomTypes();
+                Createtile();
             }
-            FigureOutMinMax(Grid1D);
-            grid = new Cell[(int)max.x, (int)max.y];
-            ConvertTo2DArray(data);
-            SetUpRoomTypes();
-            Createtile();
-            return;
+            catch
+            {
+                print("Failed to generate tiles");
+            }
+
         }
         catch
         {
             print("Not correct Json format!");
+        }
+        try
+        {
+            foreach (Cell cell in grid)
+            {
+                TileData tileData = cell.tileObject.GetComponent<TileData>();
+                print(cell.tileObject);
+                print(tileData);
+                Cell cellxp1 = new Cell(-1,-1);
+                Cell cellxm1 = new Cell(-1,-1);
+                Cell cellyp1 = new Cell(-1,-1);
+                Cell cellym1 = new Cell(-1,-1);
+
+                try
+                {
+                    if (cell.position.x + 1 < max.x)
+                    {
+                        if (grid[(int)cell.position.x + 1, (int)cell.position.y] != null)
+                            cellxp1 = grid[(int)cell.position.x + 1, (int)cell.position.y];
+                    }
+                }
+                catch
+                {
+                    print(cell.position.x + 1 + " failed " + max.x);
+                }
+                try
+                {
+                    if (cell.position.x - 1 > min.x)
+                    {
+                        if (grid[(int)cell.position.x - 1, (int)cell.position.y] != null)
+                            cellxm1 = grid[(int)cell.position.x + 1, (int)cell.position.y];
+                    }
+                }
+                catch
+                {
+                    print(cell.position.x - 1 + " failed " + min.x );
+                }
+                try
+                {
+                    if (cell.position.y + 1 < max.y)
+                    {
+                        if (grid[(int)cell.position.x + 1, (int)cell.position.y] != null)
+                            cellxp1 = grid[(int)cell.position.x, (int)cell.position.y + 1];
+                    }
+                }
+                catch
+                {
+                    print(cell.position.y + 1 + " failed " + max.y);
+                }
+                try
+                {
+                    if (cell.position.y - 1 > min.y)
+                    {
+                        if (grid[(int)cell.position.x, (int)cell.position.y + 1] != null)
+                            cellym1 = grid[(int)cell.position.x, (int)cell.position.y - 1];
+                    }
+                }
+                catch
+                {
+                    print(cell.position.y - 1 + " failed " + min.y);
+                }
+
+                tileData.CheckAdjacentTiles(cell, cellxp1, cellxm1, cellyp1, cellym1);
+            }
+        }
+        catch
+        {
+            print("Failed to change grid pieces");
         }
     }
 
@@ -337,20 +412,50 @@ public class GridManager : MonoBehaviour
                 if (cell.door.type > 0)
                 {
                     GameObject newDoor = Instantiate(doorObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
-                    if (cell.door.dir.dir == new Vector2(1, 0))
+                    if (cell.door.dir.dir == new Vector2(1, 0) || cell.door.dir.dir == new Vector2(-1, 0))
                     {
                         if(cell.pieceType == PieceType.Deadend)
                         {
-                            newDoor.transform.position = new Vector3(newDoor.transform.position.x - 2.5f, newDoor.transform.position.y, newDoor.transform.position.z);
+                            float doorOffset = 0;
+                            if(cell.door.dir.dir == new Vector2(1, 0))
+                            {
+                                if(cell.rotation == 270)
+                                    doorOffset = -2.5f;
+                                if(cell.rotation == 90)
+                                    doorOffset = 2.5f;
+                            }
+                            else if(cell.door.dir.dir == new Vector2(-1, 0))
+                            {
+                                if (cell.rotation == 270)
+                                    doorOffset = -2.5f;
+                                if (cell.rotation == 90)
+                                    doorOffset = 2.5f;
+                            }
+                            newDoor.transform.position = new Vector3(newDoor.transform.position.x + doorOffset, newDoor.transform.position.y, newDoor.transform.position.z);
                             newDoor.GetComponent<SetDoorActive>().SetTriggersoff();
                         }
                         newDoor.transform.Rotate(transform.up * 90);
                     }
-                    else if (cell.door.dir.dir == new Vector2(0, 1))
+                    else if (cell.door.dir.dir == new Vector2(0, 1) || cell.door.dir.dir == new Vector2(0, -1))
                     {
                         if (cell.pieceType == PieceType.Deadend)
                         {
-                            newDoor.transform.position = new Vector3(newDoor.transform.position.x, newDoor.transform.position.y, newDoor.transform.position.z - 2.5f);
+                            float doorOffset = 0;
+                            if (cell.door.dir.dir == new Vector2(0, 1))
+                            {
+                                if (cell.rotation == 0)
+                                    doorOffset = 2.5f;
+                                if (cell.rotation == 180)
+                                    doorOffset = -2.5f;
+                            }
+                            else if (cell.door.dir.dir == new Vector2(0, -1))
+                            {
+                                if (cell.rotation == 0)
+                                    doorOffset = 2.5f;
+                                if (cell.rotation == 180)
+                                    doorOffset = -2.5f;
+                            }
+                            newDoor.transform.position = new Vector3(newDoor.transform.position.x, newDoor.transform.position.y, newDoor.transform.position.z + doorOffset);
                             newDoor.GetComponent<SetDoorActive>().SetTriggersoff();
                         }
                         newDoor.transform.Rotate(transform.up * 0);
@@ -548,6 +653,8 @@ public class GridManager : MonoBehaviour
         tileData.Initialize(cell, (roomType[cell.roomNumber]));
         //tileData.Initialize(cell);
         cell.pieceType = tileData.type;
+        cell.rotation = tileCalculator.Rotation;
+        cell.tileObject = newtile;
         //tileData.CheckAdjacentTiles(cell, grid[(int)cell.position.x +1, (int)cell.position.y],grid[(int)cell.position.x - 1, (int)cell.position.y],grid[(int)cell.position.x, (int)cell.position.y + 1],grid[(int)cell.position.x, (int)cell.position.y - 1]);
         ListOfTiles.Add(cell);
     }
@@ -598,3 +705,47 @@ public class GridManager : MonoBehaviour
     #endregion
 }
 
+//if(cell.position.x + 1 < max.x - 1)
+//{
+//    try
+//    {
+//        if (grid[(int)cell.position.x + 1, (int)cell.position.y] != null)
+//            cellxp1 = grid[(int)cell.position.x + 1, (int)cell.position.y];
+//    }
+//    catch
+//    {
+//    }
+//}
+//if(cell.position.x - 1 > min.x)
+//{
+//    try
+//    {
+//        if (grid[(int)cell.position.x - 1, (int)cell.position.y] != null)
+//            cellxm1 = grid[(int)cell.position.x + 1, (int)cell.position.y];
+//    }
+//    catch
+//    {
+//    }
+//}
+//if(cell.position.y + 1 < max.y - 1)
+//{
+//    try
+//    {
+//        if (grid[(int)cell.position.x + 1, (int)cell.position.y] != null)
+//            cellxp1 = grid[(int)cell.position.x, (int)cell.position.y + 1];
+//    }
+//    catch
+//    {
+//    }
+//}
+//if(cell.position.y - 1 > min.y)
+//{
+//    try
+//    {
+//        if (grid[(int)cell.position.x, (int)cell.position.y + 1] != null)
+//            cellym1 = grid[(int)cell.position.x, (int)cell.position.y - 1];
+//    }
+//    catch
+//    {
+//    }
+//}

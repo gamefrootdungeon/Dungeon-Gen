@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private bool testingMode = false;
     private void Start()
     {
-        if (testingMode)
+        if (!testingMode)
         {
             if (StoreUserID.instance.isLoggedin == true)
             {
@@ -78,6 +78,14 @@ public class UIManager : MonoBehaviour
     private void Update()
     {
         CheckForEscapeButtonPressed();
+        if (isInMenu && Cursor.visible == false)
+        {
+            Cursor.visible = true;
+        }
+        if(!isInMenu && Cursor.visible == true)
+        {
+            Cursor.visible = false;
+        }
     }
 
     private void CheckForEscapeButtonPressed()
