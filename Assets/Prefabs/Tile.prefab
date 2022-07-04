@@ -78,6 +78,8 @@ MonoBehaviour:
     - {fileID: 2218850203076338501, guid: efe225446e18dee4f8f6a359bb9d4cdb, type: 3}
     SquareHallwayCornerPieceGroup:
     - {fileID: 2218850203076338501, guid: 10c62562aa7f25c4a8cf4b288de5a334, type: 3}
+    SqaureTJunctionPieceGroup:
+    - {fileID: 9015221679030297966, guid: 838f4a481468e484188a1c3b14613fc2, type: 3}
   - SquareEmptyPieceGroup:
     - {fileID: 2218850203076338501, guid: fa7e94e57cd279344b8e0aa828b9c1cf, type: 3}
     - {fileID: 2218850203076338501, guid: f87a5df3929ead548804e99c2d95e70a, type: 3}
@@ -113,6 +115,8 @@ MonoBehaviour:
     - {fileID: 2218850203076338501, guid: efe225446e18dee4f8f6a359bb9d4cdb, type: 3}
     SquareHallwayCornerPieceGroup:
     - {fileID: 2218850203076338501, guid: 10c62562aa7f25c4a8cf4b288de5a334, type: 3}
+    SqaureTJunctionPieceGroup:
+    - {fileID: 9015221679030297966, guid: 838f4a481468e484188a1c3b14613fc2, type: 3}
   - SquareEmptyPieceGroup:
     - {fileID: 2218850203076338501, guid: fa7e94e57cd279344b8e0aa828b9c1cf, type: 3}
     - {fileID: 2218850203076338501, guid: f87a5df3929ead548804e99c2d95e70a, type: 3}
@@ -151,31 +155,12 @@ MonoBehaviour:
     - {fileID: 2218850203076338501, guid: efe225446e18dee4f8f6a359bb9d4cdb, type: 3}
     SquareHallwayCornerPieceGroup:
     - {fileID: 2218850203076338501, guid: 10c62562aa7f25c4a8cf4b288de5a334, type: 3}
+    SqaureTJunctionPieceGroup:
+    - {fileID: 9015221679030297966, guid: 838f4a481468e484188a1c3b14613fc2, type: 3}
   type: 0
-  SquareEmptyPieceGroup:
-  - {fileID: 2218850203076338501, guid: b8a25be67a2055549bc4d8f745796288, type: 3}
-  SquareEdgePieceGroup:
-  - {fileID: 2218850203076338501, guid: 1c54c1bbd02ad4546b865d630bf454c2, type: 3}
-  SquareCornerPieceGroup:
-  - {fileID: 2218850203076338501, guid: 275445a2da7a4ff45a3aa371318e763e, type: 3}
-  SquareHallwayPieceGroup:
-  - {fileID: 2218850203076338501, guid: 3e700173f9d0fff43b0da89765cae5ab, type: 3}
-  SquareDoorwayPieceGroup:
-  - {fileID: 2218850203076338501, guid: 2cd460f3ed0317a4881b6ccc464f6a11, type: 3}
-  SquareDoorwayLeftCornerPieceGroup:
-  - {fileID: 2218850203076338501, guid: 33fba569b135a6a469ce468cc3722300, type: 3}
-  SquareDoorwayRightCornerPieceGroup:
-  - {fileID: 2218850203076338501, guid: 46ab4677ef4666f4e9e04b9eaec48818, type: 3}
-  SquareDeadendPieceGroup:
-  - {fileID: 2218850203076338501, guid: efe225446e18dee4f8f6a359bb9d4cdb, type: 3}
   nullObj: {fileID: 1447785537529254233, guid: bacb951b55e24b04b82a7630ce9f0c0d, type: 3}
   pieceToSpawn: {fileID: 0}
   rotation: 0
   tilePosition: {x: 0, y: 0}
   isRound: 0
   roomType: 0
-  current: 0
-  front: 0
-  left: 0
-  right: 0
-  back: 0

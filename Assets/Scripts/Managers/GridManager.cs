@@ -93,9 +93,9 @@ public class GridManager : MonoBehaviour
     public void SetTextAsset(string asset)
     {
         JsonText = asset;
-        //LoadJsonFile();
     }
 
+    #region Load Json and setup data
     public void LoadJsonFile(string asset)
     {
         DestroyDungeon();
@@ -153,9 +153,6 @@ public class GridManager : MonoBehaviour
             print("Not correct Json format!");
         }
     }
-
-
-
     public void SetUpRoomTypes()
     {
         foreach(int num in numberOfRooms)
@@ -167,7 +164,6 @@ public class GridManager : MonoBehaviour
         {
             int randomNum;
             randomNum = Random.Range(1, NumberOfDifferentRoomTypes +1);
-            //temp.Add(randomNum);
             roomType.Add(i, randomNum);
         }
     }
@@ -229,23 +225,10 @@ public class GridManager : MonoBehaviour
         min.y = lowY;
         max.y = highY + 1;
     }
-    public void SpawnPlayer() 
-    {
-        if(playerStartCoord == Vector3.zero)
-        {
-            print("No Dungeon to Spawn Player");
-        }
-        else
-        {
-            if (playerSpawned == false)
-            {
-                defaultCamera.SetActive(false);
-                playerSpawned = true;
-                player = Instantiate(playerOBJ, playerStartCoord, Quaternion.identity);
-            }
-        }
-    }
 
+    #endregion
+
+    #region Resetting functions
     private void DestroyPlayer()
     {
         playerSpawned = false;
@@ -284,6 +267,10 @@ public class GridManager : MonoBehaviour
             Destroy(World.gameObject);
         }
     }
+
+    #endregion
+
+    #region Creating tiles
     public void Createtile()
     {
         print("Create tile call");
@@ -407,6 +394,50 @@ public class GridManager : MonoBehaviour
         SpawnInfoDesk(yOffset, flipDirection);
 
     }
+
+    void InstantiateTilePiece(Cell cell, float yOffset, float flipDirection, bool isRound)
+    {
+        float posX = cell.position.x;
+        float posY = (cell.position.y * flipDirection) + yOffset;
+        GameObject newtile = Instantiate(tile, new Vector3(posX * offset, 2, posY * offset), Quaternion.identity);
+
+        newtile.transform.SetParent(worldGrp.transform);
+
+        TileData tileData = newtile.GetComponent<TileData>();
+
+        tileData.tilePosition.x = (int)cell.position.x;
+        tileData.tilePosition.y = (int)cell.position.y;
+
+        tileData.type = tileCalculator.CheckPiece(tileData.tilePosition);
+        //flipping was done early on to match the dungeon layout, if marked true I think the pieces don't spawn in correctly
+        if (!flip)
+        {
+            float flipValue = tileData.rotation += 90;
+            newtile.transform.rotation = Quaternion.Euler(newtile.transform.rotation.x, newtile.transform.localRotation.y + 180, newtile.transform.rotation.z);
+        }
+        //Checking if the current tile is a deadend piece, if it is add to a list that will be used for potential player spawn locations
+        if (tileData.type == PieceType.Deadend)
+        {
+            SpawnLocations.Add(tileData);
+        }
+        if (tileData.type == PieceType.Edge)
+        {
+            NumEdgePieces.Add(cell);
+        }
+        tileData.rotation = tileCalculator.Rotation;
+        tileData.isRound = isRound;
+
+        tileData.Initialize(cell, (roomType[cell.roomNumber]));
+        cell.pieceType = tileData.type;
+        cell.rotation = tileCalculator.Rotation;
+        cell.tileObject = newtile;
+
+        ListOfTiles.Add(cell);
+    }
+
+    #endregion
+
+    #region Spawn in chest and levelinfo desk
     private void SpawnInfoDesk(float yOffset, float flipDirection)
     {
         //just cycling through and finding a tile that matches the player starting room number
@@ -466,6 +497,17 @@ public class GridManager : MonoBehaviour
             NumEdgePieces.Remove(cell);
         }
     }
+    #endregion
+
+    #region Player related
+    //unsure what the starting door coordinates are so currently just randomly pick between all of the deadend pieces coordinates
+    private void SetPlayerSpawn(float yOffset, float flipDirection)
+    {
+        int num = Random.Range(0, SpawnLocations.Count);
+        playerStartGrid = new Vector2Int((int)SpawnLocations[num].tilePosition.x, (int)SpawnLocations[num].tilePosition.y);
+        playerStartCoord = new Vector3(SpawnLocations[num].tilePosition.x * offset, 0.5f, ((SpawnLocations[num].tilePosition.y * flipDirection) + yOffset) * offset);
+
+    }
 
     //This just checks the surrounding tiles around the player starting position
     //since the player always starts in a deadend tile there will always only be one tile with a room number
@@ -476,81 +518,43 @@ public class GridManager : MonoBehaviour
         if (playerStartGrid.x + 1 <= max.x)
         {
             if (grid[playerStartGrid.x + 1, playerStartGrid.y].content == Contents.Tile)
-            {
                 playerStatingRoomNumber = grid[playerStartGrid.x + 1, playerStartGrid.y].roomNumber;
-            }
         }
         if (playerStartGrid.x - 1 >= min.x)//checking out of bounds
         {
             if (grid[playerStartGrid.x - 1, playerStartGrid.y].content == Contents.Tile)
-            {
                 playerStatingRoomNumber = grid[playerStartGrid.x - 1, playerStartGrid.y].roomNumber;
-            }
         }
         if (playerStartGrid.y + 1 <= max.y)//checking out of bounds
         {
             if (grid[playerStartGrid.x, playerStartGrid.y + 1].content == Contents.Tile)
-            {
                 playerStatingRoomNumber = grid[playerStartGrid.x, playerStartGrid.y + 1].roomNumber;
-            }
         }
         if (playerStartGrid.y - 1 >= min.y)//checking out of bounds
         {
             if (grid[playerStartGrid.x, playerStartGrid.y - 1].content == Contents.Tile)
-            {
                 playerStatingRoomNumber = grid[playerStartGrid.x, playerStartGrid.y - 1].roomNumber;
+        }
+    }
+
+    public void SpawnPlayer()
+    {
+        if (playerStartCoord == Vector3.zero)
+            print("No Dungeon to Spawn Player");
+        else
+        {
+            if (playerSpawned == false)
+            {
+                defaultCamera.SetActive(false);
+                playerSpawned = true;
+                player = Instantiate(playerOBJ, playerStartCoord, Quaternion.identity);
             }
         }
-
     }
 
-    //unsure what the starting door coordinates are so currently just randomly pick between all of the deadend pieces coordinates
-    private void SetPlayerSpawn(float yOffset, float flipDirection)
-    {
-        int num = Random.Range(0, SpawnLocations.Count);
-        playerStartGrid = new Vector2Int((int)SpawnLocations[num].tilePosition.x, (int)SpawnLocations[num].tilePosition.y);
-        playerStartCoord = new Vector3(SpawnLocations[num].tilePosition.x * offset, 0.5f, ((SpawnLocations[num].tilePosition.y * flipDirection) + yOffset) * offset);
+    #endregion
 
-    }
-    void InstantiateTilePiece(Cell cell, float yOffset, float flipDirection, bool isRound)
-    {
-        float posX = cell.position.x;
-        float posY = (cell.position.y * flipDirection) + yOffset;
-        GameObject newtile = Instantiate(tile, new Vector3(posX * offset, 2, posY * offset), Quaternion.identity);
 
-        newtile.transform.SetParent(worldGrp.transform);
-
-        TileData tileData = newtile.GetComponent<TileData>();
-
-        tileData.tilePosition.x = (int)cell.position.x;
-        tileData.tilePosition.y = (int)cell.position.y;
-
-        tileData.type = tileCalculator.CheckPiece(tileData.tilePosition);
-        //flipping was done early on to match the dungeon layout, if marked true I think the pieces don't spawn in correctly
-        if (!flip)
-        {
-            float flipValue = tileData.rotation += 90;
-            newtile.transform.rotation = Quaternion.Euler(newtile.transform.rotation.x, newtile.transform.localRotation.y + 180, newtile.transform.rotation.z);
-        }
-        //Checking if the current tile is a deadend piece, if it is add to a list that will be used for potential player spawn locations
-        if(tileData.type == PieceType.Deadend)
-        {
-            SpawnLocations.Add(tileData);
-        }
-        if(tileData.type == PieceType.Edge)
-        {
-            NumEdgePieces.Add(cell);
-        }
-        tileData.rotation = tileCalculator.Rotation;
-        tileData.isRound = isRound;
-
-        tileData.Initialize(cell, (roomType[cell.roomNumber]));
-        cell.pieceType = tileData.type;
-        cell.rotation = tileCalculator.Rotation;
-        cell.tileObject = newtile;
-      
-        ListOfTiles.Add(cell);
-    }
     #region Debugging
     //Used for debugging and having something in scene that displays the grid number
     public void CheckGrid()

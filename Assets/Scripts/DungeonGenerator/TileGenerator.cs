@@ -24,6 +24,14 @@ public class TileGenerator
         {
             return PieceType.Doorway;
         }
+        else if (IsTJunction(position))
+        {
+            return PieceType.TJunction;
+        }
+        else if (IsHallwayCorner(position))
+        {
+            return PieceType.HallwayCorner;
+        }
         else if (IsDoorwayOnLeftCorner(position))
         {
             return PieceType.DoorwayLeftCorner;
@@ -36,10 +44,7 @@ public class TileGenerator
         {
             return PieceType.Hallway;
         }
-        else if (IsHallwayCorner(position))
-        {
-            return PieceType.HallwayCorner;
-        }
+
         else if (IsCorner(position))
         {
             return PieceType.Corner;
@@ -95,7 +100,8 @@ public class TileGenerator
             !IsPiece(startCoord + Vector2Int.left)) // nothin on LEFT
         {
             if (!IsPiece(startCoord + (Vector2Int.left + Vector2Int.up)) && //Checking the TOP Tile has pieces on the left and right
-                !IsPiece(startCoord + (Vector2Int.right + Vector2Int.up)))
+                !IsPiece(startCoord + (Vector2Int.right + Vector2Int.up)) &&
+                IsPiece(startCoord + Vector2Int.right + Vector2Int.down ))
             {
                 rotation = 0;
                 return true;
@@ -107,7 +113,8 @@ public class TileGenerator
             IsPiece(startCoord + Vector2Int.left)) //TOP
         {
             if (!IsPiece(startCoord + (Vector2Int.right + Vector2Int.up)) && //Checking the RIGHT Tile has pieces on the left and right
-                !IsPiece(startCoord + (Vector2Int.right + Vector2Int.down)))
+                !IsPiece(startCoord + (Vector2Int.right + Vector2Int.down)) &&
+                IsPiece(startCoord + Vector2Int.left+ Vector2Int.down))
             {
                 rotation = 90;
                 return true;
@@ -119,7 +126,8 @@ public class TileGenerator
             IsPiece(startCoord + Vector2Int.left)) //RIGHT
         {
             if (!IsPiece(startCoord + (Vector2Int.right + Vector2Int.down)) && //Checking the BOTTOM Tile has pieces on the left and right
-                !IsPiece(startCoord + (Vector2Int.left + Vector2Int.down)))
+                !IsPiece(startCoord + (Vector2Int.left + Vector2Int.down))&&
+                IsPiece(startCoord + Vector2Int.left + Vector2Int.up))
             {
                 rotation = 180;
                 return true;
@@ -131,7 +139,8 @@ public class TileGenerator
             IsPiece(startCoord + Vector2Int.left)) //BOTTOM
         {
             if (!IsPiece(startCoord + (Vector2Int.left + Vector2Int.up)) && //Checking the LEFT Tile has pieces on the left and right
-                !IsPiece(startCoord + (Vector2Int.left + Vector2Int.down)))
+                !IsPiece(startCoord + (Vector2Int.left + Vector2Int.down)) &&
+                IsPiece(startCoord + Vector2Int.right + Vector2Int.up))
             {
                 rotation = 270;
                 return true;
@@ -347,58 +356,47 @@ public class TileGenerator
 
     bool IsHallwayCorner(Vector2Int startCoord)
     {
-        if (IsPiece(startCoord + Vector2Int.right) &&
-            !IsPiece(startCoord + Vector2Int.left) &&
-            !IsPiece(startCoord + Vector2Int.up) &&
-            IsPiece(startCoord + Vector2Int.down)) //Top Left x+1 y, x y+1
+        if (!IsPiece(startCoord + Vector2Int.up + Vector2Int.right) &&
+            !IsPiece(startCoord + Vector2Int.up + Vector2Int.left) &&
+            !IsPiece(startCoord + Vector2Int.down + Vector2Int.right) &&
+            !IsPiece(startCoord + Vector2Int.down + Vector2Int.left))
         {
-            if(!IsPiece(startCoord + Vector2Int.right + Vector2Int.up) &&
-                !IsPiece(startCoord + Vector2Int.right + Vector2Int.down) &&
-                !IsPiece(startCoord + Vector2Int.left + Vector2Int.up))
+            if (IsPiece(startCoord + Vector2Int.right) &&
+                !IsPiece(startCoord + Vector2Int.left) &&
+                !IsPiece(startCoord + Vector2Int.up) &&
+                IsPiece(startCoord + Vector2Int.down)) //Top Left x+1 y, x y+1
             {
                 this.rotation = 0;
                 return true;
             }
-        }
-        else if (!IsPiece(startCoord + Vector2Int.right) &&
-                IsPiece(startCoord + Vector2Int.left) &&
-                !IsPiece(startCoord + Vector2Int.up) &&
-                IsPiece(startCoord + Vector2Int.down)) //Top Right x y+1, x-1 y
-        {
-            if (!IsPiece(startCoord + Vector2Int.right + Vector2Int.up) &&
-                !IsPiece(startCoord + Vector2Int.left + Vector2Int.down) &&
-                !IsPiece(startCoord + Vector2Int.left + Vector2Int.up))
+            else if (!IsPiece(startCoord + Vector2Int.right) &&
+                    IsPiece(startCoord + Vector2Int.left) &&
+                    !IsPiece(startCoord + Vector2Int.up) &&
+                    IsPiece(startCoord + Vector2Int.down)) //Top Right x y+1, x-1 y
             {
                 this.rotation = 90;
                 return true;
             }
-        }
-        else if (!IsPiece(startCoord + Vector2Int.right) &&
-                IsPiece(startCoord + Vector2Int.left) &&
-                IsPiece(startCoord + Vector2Int.up) &&
-                !IsPiece(startCoord + Vector2Int.down))//Bottom Left x-1 y, x y-1
-        {
-            if (!IsPiece(startCoord + Vector2Int.right + Vector2Int.down) &&
-                !IsPiece(startCoord + Vector2Int.left + Vector2Int.down) &&
-                !IsPiece(startCoord + Vector2Int.left + Vector2Int.up))
+            else if (!IsPiece(startCoord + Vector2Int.right) &&
+                    IsPiece(startCoord + Vector2Int.left) &&
+                    IsPiece(startCoord + Vector2Int.up) &&
+                    !IsPiece(startCoord + Vector2Int.down))//Bottom Left x-1 y, x y-1
             {
                 this.rotation = 180;
                 return true;
             }
-        }
-        else if (IsPiece(startCoord + Vector2Int.right) &&
-                !IsPiece(startCoord + Vector2Int.left) &&
-                IsPiece(startCoord + Vector2Int.up) &&
-                !IsPiece(startCoord + Vector2Int.down))//Bottom Right x y-1, x+1 y
-        {
-            if (!IsPiece(startCoord + Vector2Int.right + Vector2Int.down) &&
-                !IsPiece(startCoord + Vector2Int.left + Vector2Int.down) &&
-                !IsPiece(startCoord + Vector2Int.right + Vector2Int.up))
+            else if (IsPiece(startCoord + Vector2Int.right) &&
+                    !IsPiece(startCoord + Vector2Int.left) &&
+                    IsPiece(startCoord + Vector2Int.up) &&
+                    !IsPiece(startCoord + Vector2Int.down))//Bottom Right x y-1, x+1 y
             {
                 this.rotation = 270;
                 return true;
+                
             }
+            return false;
         }
+
         return false;
     }
 
@@ -435,6 +433,50 @@ public class TileGenerator
         {
             rotation = 270;
             return true;
+        }
+        return false;
+    }
+
+    bool IsTJunction(Vector2Int startCoord)
+    {
+        if (!IsPiece(startCoord + Vector2Int.up + Vector2Int.right) &&
+            !IsPiece(startCoord + Vector2Int.up + Vector2Int.left) &&
+            !IsPiece(startCoord + Vector2Int.down + Vector2Int.right) &&
+            !IsPiece(startCoord + Vector2Int.down + Vector2Int.left))
+        {
+            if (IsPiece(startCoord + Vector2Int.right) &&
+                IsPiece(startCoord + Vector2Int.left) &&
+                !IsPiece(startCoord + Vector2Int.up) &&
+                IsPiece(startCoord + Vector2Int.down))
+            {
+                rotation = 0;
+                return true;
+            }
+            else if (!IsPiece(startCoord + Vector2Int.right) &&
+                IsPiece(startCoord + Vector2Int.left) &&
+                IsPiece(startCoord + Vector2Int.up) &&
+                IsPiece(startCoord + Vector2Int.down))
+            {
+                rotation = 90;
+                return true;
+            }
+            else if (IsPiece(startCoord + Vector2Int.right) &&
+                IsPiece(startCoord + Vector2Int.left) &&
+                IsPiece(startCoord + Vector2Int.up) &&
+                !IsPiece(startCoord + Vector2Int.down))
+            {
+                rotation = 180;
+                return true;
+            }
+            else if (IsPiece(startCoord + Vector2Int.right) &&
+                !IsPiece(startCoord + Vector2Int.left) &&
+                IsPiece(startCoord + Vector2Int.up) &&
+                IsPiece(startCoord + Vector2Int.down))
+            {
+                rotation = 270;
+                return true;
+            }
+            return false;
         }
         return false;
     }

@@ -40,27 +40,11 @@ public class UIManager : MonoBehaviour
     public string userID;
     public int currentDemoNum = 0;
     public TextAsset[] DefaultJson;
+    public string jsonView;
 
     [Header("DEBUG")]
     [SerializeField] private bool testingMode = false;
-    //play button calls this funtion
-    public void SpawnPlayer()
-    {
-        gridManager.SpawnPlayer();
-        if (gridManager.playerSpawned)
-        {
-            isInGame = true;
-            isInMenu = false;
-            if (!isTopDown)
-            {
-                HideMouse();
-                HudUIObj.SetActive(true);
-            }
-            MainMenu.SetActive(false);
-            PauseMenu.SetActive(false);
-            ResumeGame();
-        }
-    }
+
 
     private void Start()
     {
@@ -83,11 +67,26 @@ public class UIManager : MonoBehaviour
     }
     private void Update()
     {
-        //CheckForEscapeButtonPressed();
-        //if (isInMenu && Cursor.visible == false)
-        //    Cursor.visible = true;
-        //if(!isInMenu && Cursor.visible == true)
-        //    Cursor.visible = false;
+        CheckForEscapeButtonPressed();
+    }
+
+    //play button calls this funtion
+    public void SpawnPlayer()
+    {
+        gridManager.SpawnPlayer();
+        if (gridManager.playerSpawned)
+        {
+            isInGame = true;
+            isInMenu = false;
+            if (!isTopDown)
+            {
+                HideMouse();
+                HudUIObj.SetActive(true);
+            }
+            MainMenu.SetActive(false);
+            PauseMenu.SetActive(false);
+            ResumeGame();
+        }
     }
 
     private void CheckForEscapeButtonPressed()
@@ -103,7 +102,8 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-    public string jsonView;
+
+    #region SetUp levels
     public void SetUpLevel(string json)
     {
         jsonView = json;
@@ -126,6 +126,7 @@ public class UIManager : MonoBehaviour
         InfoText.text = gridManager.story;
     }
 
+    #endregion
 
     #region Load Default JSON
     public void LoadDefaultJson()

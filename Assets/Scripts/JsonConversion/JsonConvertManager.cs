@@ -113,17 +113,13 @@ public class JsonConvertManager : MonoBehaviour
                         if (grid[x, y] != null)
                         {
                             if (grid[x, y].content == Contents.Tile)
-                            {
                                 continue;
-                            }
                         }
                         else
                         {
                             newCell.SetContents(Contents.Empty);
                             if (grid[x, y] == null)
-                            {
                                 newCell.newTiles(position, false);
-                            }
                             grid[x, y] = newCell;
                         }
                     }

@@ -8,13 +8,14 @@ public class RoomPrefabs
 {
     public List<GameObject> SquareEmptyPieceGroup;
     public List<GameObject> SquareEdgePieceGroup;
-    public GameObject[] SquareCornerPieceGroup;
-    public GameObject[] SquareHallwayPieceGroup;
-    public GameObject[] SquareDoorwayPieceGroup;
-    public GameObject[] SquareDoorwayLeftCornerPieceGroup;
-    public GameObject[] SquareDoorwayRightCornerPieceGroup;
-    public GameObject[] SquareDeadendPieceGroup;
-    public GameObject[] SquareHallwayCornerPieceGroup;
+    public List<GameObject> SquareCornerPieceGroup;
+    public List<GameObject> SquareHallwayPieceGroup;
+    public List<GameObject> SquareDoorwayPieceGroup;
+    public List<GameObject> SquareDoorwayLeftCornerPieceGroup;
+    public List<GameObject> SquareDoorwayRightCornerPieceGroup;
+    public List<GameObject> SquareDeadendPieceGroup;
+    public List<GameObject> SquareHallwayCornerPieceGroup;
+    public List<GameObject> SqaureTJunctionPieceGroup;
 }
 
 [System.Serializable]
@@ -22,15 +23,6 @@ public class TileData : MonoBehaviour
 {
     public RoomPrefabs[] roomPrefabs;
     public PieceType type;
-
-    public GameObject[] SquareEmptyPieceGroup;
-    public GameObject[] SquareEdgePieceGroup;
-    public GameObject[] SquareCornerPieceGroup;
-    public GameObject[] SquareHallwayPieceGroup;
-    public GameObject[] SquareDoorwayPieceGroup;
-    public GameObject[] SquareDoorwayLeftCornerPieceGroup;
-    public GameObject[] SquareDoorwayRightCornerPieceGroup;
-    public GameObject[] SquareDeadendPieceGroup;
 
     private GameObject SquareEmptyPiece;
     private GameObject SquareEdgePiece;
@@ -41,6 +33,7 @@ public class TileData : MonoBehaviour
     private GameObject SquareDoorwayRightCornerPiece;
     private GameObject SquareDeadendPiece;
     private GameObject SquareHallwayCornerPiece;
+    private GameObject SquareTJunctionPiece;
     private GameObject tileMesh;
     public GameObject nullObj;
 
@@ -83,7 +76,7 @@ public class TileData : MonoBehaviour
                     prefabNum = num;
                     break;
                 case PieceType.Corner:
-                    int num2 = Random.Range(0, roomPrefabs[roomType].SquareCornerPieceGroup.Length);
+                    int num2 = Random.Range(0, roomPrefabs[roomType].SquareCornerPieceGroup.Count);
                     SquareCornerPiece = roomPrefabs[roomType].SquareCornerPieceGroup[num2];
                     pieceToSpawn = SquareCornerPiece;
                     prefabNum = num2;
@@ -95,39 +88,44 @@ public class TileData : MonoBehaviour
                     prefabNum = num3;
                     break;
                 case PieceType.Hallway:
-                    int num4 = Random.Range(0, roomPrefabs[roomType].SquareHallwayPieceGroup.Length);
+                    int num4 = Random.Range(0, roomPrefabs[roomType].SquareHallwayPieceGroup.Count);
                     SquareHallwayPiece = roomPrefabs[roomType].SquareHallwayPieceGroup[num4];
                     pieceToSpawn = SquareHallwayPiece;
                     prefabNum = num4;
                     break;
                 case PieceType.Doorway:
-                    int num5 = Random.Range(0, roomPrefabs[roomType].SquareDoorwayPieceGroup.Length);
+                    int num5 = Random.Range(0, roomPrefabs[roomType].SquareDoorwayPieceGroup.Count);
                     SquareDoorwayPiece = roomPrefabs[roomType].SquareDoorwayPieceGroup[num5];
                     pieceToSpawn = SquareDoorwayPiece;
                     prefabNum = num5;
                     break;
                 case PieceType.DoorwayLeftCorner:
-                    int num6 = Random.Range(0, roomPrefabs[roomType].SquareDoorwayLeftCornerPieceGroup.Length);
+                    int num6 = Random.Range(0, roomPrefabs[roomType].SquareDoorwayLeftCornerPieceGroup.Count);
                     SquareDoorwayLeftCornerPiece = roomPrefabs[roomType].SquareDoorwayLeftCornerPieceGroup[num6];
                     pieceToSpawn = SquareDoorwayLeftCornerPiece;
                     prefabNum = num6;
                     break;
                 case PieceType.DoorwayRightCorner:
-                    int num7 = Random.Range(0, roomPrefabs[roomType].SquareDoorwayRightCornerPieceGroup.Length);
+                    int num7 = Random.Range(0, roomPrefabs[roomType].SquareDoorwayRightCornerPieceGroup.Count);
                     SquareDoorwayRightCornerPiece = roomPrefabs[roomType].SquareDoorwayRightCornerPieceGroup[num7];
                     pieceToSpawn = SquareDoorwayRightCornerPiece;
                     prefabNum = num7;
                     break;
                 case PieceType.Deadend:
-                    int num8 = Random.Range(0, roomPrefabs[roomType].SquareDeadendPieceGroup.Length);
+                    int num8 = Random.Range(0, roomPrefabs[roomType].SquareDeadendPieceGroup.Count);
                     SquareDeadendPiece = roomPrefabs[roomType].SquareDeadendPieceGroup[num8];
                     pieceToSpawn = SquareDeadendPiece;
                     prefabNum = num8;
                     break;
                 case PieceType.HallwayCorner:
-                    int num9 = Random.Range(0, roomPrefabs[roomType].SquareHallwayCornerPieceGroup.Length);
+                    int num9 = Random.Range(0, roomPrefabs[roomType].SquareHallwayCornerPieceGroup.Count);
                     SquareHallwayCornerPiece = roomPrefabs[roomType].SquareHallwayCornerPieceGroup[num9];
                     pieceToSpawn = SquareHallwayCornerPiece;
+                    break;
+                case PieceType.TJunction:
+                    int num10 = Random.Range(0, roomPrefabs[roomType].SqaureTJunctionPieceGroup.Count);
+                    SquareTJunctionPiece = roomPrefabs[roomType].SqaureTJunctionPieceGroup[num10];
+                    pieceToSpawn = SquareTJunctionPiece;
                     break;
                 case PieceType.Null:
                     pieceToSpawn = nullObj;
