@@ -76,6 +76,8 @@ MonoBehaviour:
     - {fileID: 2218850203076338501, guid: 46ab4677ef4666f4e9e04b9eaec48818, type: 3}
     SquareDeadendPieceGroup:
     - {fileID: 2218850203076338501, guid: efe225446e18dee4f8f6a359bb9d4cdb, type: 3}
+    SquareHallwayCornerPieceGroup:
+    - {fileID: 2218850203076338501, guid: 10c62562aa7f25c4a8cf4b288de5a334, type: 3}
   - SquareEmptyPieceGroup:
     - {fileID: 2218850203076338501, guid: fa7e94e57cd279344b8e0aa828b9c1cf, type: 3}
     - {fileID: 2218850203076338501, guid: f87a5df3929ead548804e99c2d95e70a, type: 3}
@@ -109,6 +111,8 @@ MonoBehaviour:
     - {fileID: 2218850203076338501, guid: 46ab4677ef4666f4e9e04b9eaec48818, type: 3}
     SquareDeadendPieceGroup:
     - {fileID: 2218850203076338501, guid: efe225446e18dee4f8f6a359bb9d4cdb, type: 3}
+    SquareHallwayCornerPieceGroup:
+    - {fileID: 2218850203076338501, guid: 10c62562aa7f25c4a8cf4b288de5a334, type: 3}
   - SquareEmptyPieceGroup:
     - {fileID: 2218850203076338501, guid: fa7e94e57cd279344b8e0aa828b9c1cf, type: 3}
     - {fileID: 2218850203076338501, guid: f87a5df3929ead548804e99c2d95e70a, type: 3}
@@ -145,6 +149,8 @@ MonoBehaviour:
     - {fileID: 2218850203076338501, guid: 46ab4677ef4666f4e9e04b9eaec48818, type: 3}
     SquareDeadendPieceGroup:
     - {fileID: 2218850203076338501, guid: efe225446e18dee4f8f6a359bb9d4cdb, type: 3}
+    SquareHallwayCornerPieceGroup:
+    - {fileID: 2218850203076338501, guid: 10c62562aa7f25c4a8cf4b288de5a334, type: 3}
   type: 0
   SquareEmptyPieceGroup:
   - {fileID: 2218850203076338501, guid: b8a25be67a2055549bc4d8f745796288, type: 3}
@@ -163,6 +169,7 @@ MonoBehaviour:
   SquareDeadendPieceGroup:
   - {fileID: 2218850203076338501, guid: efe225446e18dee4f8f6a359bb9d4cdb, type: 3}
   nullObj: {fileID: 1447785537529254233, guid: bacb951b55e24b04b82a7630ce9f0c0d, type: 3}
+  pieceToSpawn: {fileID: 0}
   rotation: 0
   tilePosition: {x: 0, y: 0}
   isRound: 0

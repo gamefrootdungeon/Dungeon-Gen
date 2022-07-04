@@ -11,6 +11,7 @@ public enum PieceType
     DoorwayLeftCorner,
     DoorwayRightCorner,
     Deadend,
+    HallwayCorner,
     Null
 }
 public class PublicEnums : MonoBehaviour

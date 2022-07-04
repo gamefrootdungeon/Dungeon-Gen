@@ -10,26 +10,25 @@ public enum infoTag
 
 public class GridManager : MonoBehaviour
 {
+
     private TileGenerator tileCalculator;
     public UIManager uiManager;
 
-    public GameObject defaultCamera;
-    public GameObject worldGrp;
+    [SerializeField] private GameObject defaultCamera;
+    [SerializeField] private GameObject worldGrp;
 
 
-    public string title;
-    public string story;
-    public bool flip;
+    [Header("Grid INFO")]
+    [SerializeField] private bool flip;
     [SerializeField] private Vector2 min;
     [SerializeField] private Vector2 max;
-    public Cell[,] grid;
-    public Cell[] Grid1D;
+    private Cell[,] grid;
+    private Cell[] Grid1D;
     public List<Cell> ListOfTiles = new List<Cell>();
-
+    [SerializeField] private List<Cell> NumEdgePieces = new List<Cell>();
     public float offset;
 
-    public GameObject tile;
-    public GameObject emptySpace;
+    [SerializeField] private GameObject tile;
 
 
     [Header("PLAYER INFO")]
@@ -41,33 +40,37 @@ public class GridManager : MonoBehaviour
     private GameObject player;
     private Vector3 playerStartCoord;
     private List<TileData> SpawnLocations = new List<TileData>();
-    [SerializeField] private List<Cell> NumEdgePieces = new List<Cell>();
+    private Vector2Int playerStartGrid;
 
-    public string JsonText = "";
+
+    [Header("Objects to spawn")]
+    [SerializeField] private GameObject doorObj;
+    [SerializeField] private GameObject levelInfoObj;
     [SerializeField] private bool SpawnInNotes = false;
+    [SerializeField] private GameObject displayNotesObj;
+    [SerializeField] private GameObject ChestObj;
 
-    public GameObject doorObj;
-    public GameObject levelInfoObj;
-    public GameObject displayNotesObj;
-    public GameObject NFTChestObj;
-    public GameObject PotAObj;
-    public GameObject SkeletonOnGroundObj;
-
-    [Header("DEBUG")]
-    [SerializeField] private bool showGrid = false;
-    [SerializeField] private bool showEmptySpace = false;
-    private GameObject gridNumber;
-    public List<int> VisualizernumberOfRooms = new List<int>();
-    public HashSet<int> numberOfRooms = new HashSet<int>();
-
-    public bool infoRoomBeenPlaced = false;
-
+    [Header("Rooms")]
+    public string title;
+    public string story;
     //When add to the array group in the tile prefab remeber to change this number to match the size
     public int NumberOfDifferentRoomTypes;
     public Dictionary<int, int> roomType = new Dictionary<int, int>();
 
-    private Vector2Int playerStartGrid;
-    private int playerStatingRoomNumber;
+
+    [Header("DEBUG")]
+    [SerializeField] private string JsonText = "";
+    [SerializeField] private bool showGrid = false;
+    [SerializeField] private bool showEmptySpace = false;
+    [SerializeField] private GameObject gridNumber;
+    [SerializeField] private List<int> VisualizernumberOfRooms = new List<int>();
+    private HashSet<int> numberOfRooms = new HashSet<int>();
+
+    [SerializeField] private bool infoRoomBeenPlaced = false;
+    [SerializeField] private int playerStatingRoomNumber;
+    [SerializeField] private GameObject emptySpace;
+
+
     public void Start()
     {
         CheckWhatPlayerType();
@@ -149,74 +152,6 @@ public class GridManager : MonoBehaviour
         {
             print("Not correct Json format!");
         }
-        try
-        {
-            foreach (Cell cell in grid)
-            {
-                TileData tileData = cell.tileObject.GetComponent<TileData>();
-                print(cell.tileObject);
-                print(tileData);
-                Cell cellxp1 = new Cell(-1,-1);
-                Cell cellxm1 = new Cell(-1,-1);
-                Cell cellyp1 = new Cell(-1,-1);
-                Cell cellym1 = new Cell(-1,-1);
-
-                try
-                {
-                    if (cell.position.x + 1 < max.x)
-                    {
-                        if (grid[(int)cell.position.x + 1, (int)cell.position.y] != null)
-                            cellxp1 = grid[(int)cell.position.x + 1, (int)cell.position.y];
-                    }
-                }
-                catch
-                {
-                    print(cell.position.x + 1 + " failed " + max.x);
-                }
-                try
-                {
-                    if (cell.position.x - 1 > min.x)
-                    {
-                        if (grid[(int)cell.position.x - 1, (int)cell.position.y] != null)
-                            cellxm1 = grid[(int)cell.position.x + 1, (int)cell.position.y];
-                    }
-                }
-                catch
-                {
-                    print(cell.position.x - 1 + " failed " + min.x );
-                }
-                try
-                {
-                    if (cell.position.y + 1 < max.y)
-                    {
-                        if (grid[(int)cell.position.x + 1, (int)cell.position.y] != null)
-                            cellxp1 = grid[(int)cell.position.x, (int)cell.position.y + 1];
-                    }
-                }
-                catch
-                {
-                    print(cell.position.y + 1 + " failed " + max.y);
-                }
-                try
-                {
-                    if (cell.position.y - 1 > min.y)
-                    {
-                        if (grid[(int)cell.position.x, (int)cell.position.y + 1] != null)
-                            cellym1 = grid[(int)cell.position.x, (int)cell.position.y - 1];
-                    }
-                }
-                catch
-                {
-                    print(cell.position.y - 1 + " failed " + min.y);
-                }
-
-                tileData.CheckAdjacentTiles(cell, cellxp1, cellxm1, cellyp1, cellym1);
-            }
-        }
-        catch
-        {
-            print("Failed to change grid pieces");
-        }
     }
 
 
@@ -236,12 +171,6 @@ public class GridManager : MonoBehaviour
             roomType.Add(i, randomNum);
             
         }
-        //print("index 0" + roomType[0]);
-        //print("index 1" + roomType[1]);
-        //print("index 2" + roomType[2]);
-        //print("index 3" + roomType[3]);
-        //print("index 4" + roomType[4]);
-        //print("index 5" + roomType[5]);
     }
     private void ConvertTo2DArray(ConvertFromJsonToGridClass data)
     {
@@ -314,8 +243,6 @@ public class GridManager : MonoBehaviour
                 defaultCamera.SetActive(false);
                 playerSpawned = true;
                 player = Instantiate(playerOBJ, playerStartCoord, Quaternion.identity);
-                //player.GetComponentInChildren<FPSController>().CheckIfWallInFront();
-                //uiManager.StartGame();
             }
         }
 
@@ -341,6 +268,8 @@ public class GridManager : MonoBehaviour
         if (World = GameObject.FindGameObjectWithTag("World_Grp"))
         {
             roomType.Clear();
+            NumEdgePieces.Clear();
+            SpawnLocations.Clear();
             World = GameObject.FindGameObjectWithTag("World_Grp");
             tileCalculator = null;
             //loader = null;
@@ -348,6 +277,7 @@ public class GridManager : MonoBehaviour
             this.max = Vector2.zero;
             playerStartCoord = Vector3.zero;
             grid = null;
+            playerSpawned = false;
             Destroy(World.gameObject);
         }
     }
@@ -364,7 +294,6 @@ public class GridManager : MonoBehaviour
             yOffset = max.y;
             flipDirection = -1;
         }
-        //CheckGrid();
         tileCalculator = new TileGenerator(grid, min, max);
 
         #region Debugging
@@ -388,14 +317,15 @@ public class GridManager : MonoBehaviour
                 {
                     if (cell.tile.isRound)
                     {
-                        InstantiateTilePiece(cell, yOffset, flipDirection, true);
+                        //For if want to spawn in round pieces, hasn't been tested for a while
+                        //InstantiateTilePiece(cell, yOffset, flipDirection, true);
                     }
                     else
                     {
                         InstantiateTilePiece(cell, yOffset, flipDirection, false);
                     }
                 }
-                //Spawn in notes from JSON file
+                //Spawn in notes from JSON file, these only really work if the json notes name is changed from "ref" to "reference"
                 if (SpawnInNotes)
                 {
                     //if the string on the cell has something on it then instantiate a displaynote object
@@ -409,11 +339,13 @@ public class GridManager : MonoBehaviour
                     }
                 }
                 //Instantiate a door into the grid
+                //This is done after all of the piece types have been spawned in
                 if (cell.door.type > 0)
                 {
                     GameObject newDoor = Instantiate(doorObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
                     if (cell.door.dir.dir == new Vector2(1, 0) || cell.door.dir.dir == new Vector2(-1, 0))
                     {
+                        //offsets the doors if they are in a deadend tile piece
                         if(cell.pieceType == PieceType.Deadend)
                         {
                             float doorOffset = 0;
@@ -464,51 +396,14 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-        print("Tiles spawned ");
+
         SetPlayerSpawn(yOffset, flipDirection);
-        //SpawnInLevelDataObject(yOffset, flipDirection, levelInfoObj);
-        //SpawnInObject(yOffset, flipDirection, NFTChestObj);
         FigureOutPlayerStartingRoomNumber();
-        SpawnNFTChest(yOffset, flipDirection);
+
+        SpawnChest(yOffset, flipDirection);
         SpawnInfoDesk(yOffset, flipDirection);
-        //SpawnRandomObjects(yOffset, flipDirection);
 
     }
-
-    //Currently disabled, spawn given objects randomly around the level
-    //private void SpawnRandomObjects(float yOffset, float flipDirection)
-    //{
-    //    for (int i = 0; i < 5; i++)
-    //    {
-    //        SpawnInObject(yOffset, flipDirection, PotAObj);
-    //        SpawnInObject(yOffset, flipDirection, SkeletonOnGroundObj);
-    //    }
-    //}
-    //private void SpawnInLevelDataObject(float yOffset, float flipDirection, GameObject objectToSpawn)
-    //{
-
-    //    int n = Random.Range(0, ListOfTiles.Count);
-    //    Cell cell = ListOfTiles[n];
-    //    if (cell.objectInTile != null)
-    //    {
-    //        SpawnInLevelDataObject(yOffset, flipDirection, objectToSpawn);
-    //    }
-    //    else
-    //    {
-    //        //Checking to see if given cell position in on a doorway piece, recalls the method and creates another random number if is on one
-    //        if (cell.pieceType == PieceType.Doorway || cell.pieceType == PieceType.DoorwayLeftCorner || cell.pieceType == PieceType.DoorwayRightCorner)
-    //        {
-    //            SpawnInLevelDataObject(yOffset, flipDirection, objectToSpawn);
-    //        }
-    //        else
-    //        {
-    //            GameObject NewSpawnedobject = Instantiate(objectToSpawn, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
-    //            NewSpawnedobject.GetComponent<InfoDisplayTrigger>().SetUpInfo(title, story, infoTag.LevelDisplay);
-    //            NewSpawnedobject.transform.SetParent(worldGrp.transform);
-    //            cell.AddTileData(NewSpawnedobject);
-    //        }
-    //    }
-    //}
     private void SpawnInfoDesk(float yOffset, float flipDirection)
     {
         List<Cell> templist = NumEdgePieces;
@@ -542,48 +437,24 @@ public class GridManager : MonoBehaviour
             NumEdgePieces.Remove(cell);
         }
     }
-    private void SpawnNFTChest(float yOffset, float flipDirection)
+    private void SpawnChest(float yOffset, float flipDirection)
     {
         int num = Random.Range(0, NumEdgePieces.Count);
         Cell cell = NumEdgePieces[num];
         if (cell.objectInTile != null)
         {
-            SpawnNFTChest(yOffset, flipDirection);
+            SpawnChest(yOffset, flipDirection);
         }
         else
         {
-            GameObject NewSpawnedobject = Instantiate(NFTChestObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
+            GameObject NewSpawnedobject = Instantiate(ChestObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
             NewSpawnedobject.transform.SetParent(worldGrp.transform);
             cell.AddTileData(NewSpawnedobject);
             grid[(int)NumEdgePieces[num].position.x, (int)NumEdgePieces[num].position.y].AddTileData(NewSpawnedobject);
             NumEdgePieces.Remove(cell);
         }
     }
-    //private void SpawnInObject(float yOffset, float flipDirection, GameObject objectToSpawn)
-    //{
-    //    int n = Random.Range(0, ListOfTiles.Count);
-    //    Cell cell = ListOfTiles[n];
-    //    if(cell.objectInTile != null)
-    //    {
-    //        SpawnInObject(yOffset, flipDirection, objectToSpawn);
-    //    }
-    //    else
-    //    {
-    //        if (cell.pieceType == PieceType.Doorway ||
-    //            cell.pieceType == PieceType.DoorwayLeftCorner ||
-    //            cell.pieceType == PieceType.DoorwayRightCorner ||
-    //            cell.pieceType == PieceType.Hallway)
-    //        {
-    //            SpawnInObject(yOffset, flipDirection, objectToSpawn);
-    //        }
-    //        else
-    //        {
-    //            GameObject NewSpawnedobject = Instantiate(objectToSpawn, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
-    //            NewSpawnedobject.transform.SetParent(worldGrp.transform);
-    //            cell.AddTileData(NewSpawnedobject);
-    //        }
-    //    }
-    //}
+
 
     private void FigureOutPlayerStartingRoomNumber()
     {
@@ -610,6 +481,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    //unsure what the starting door coordinates are so currently just randomly pick between all of the deadend pieces coordinates
     private void SetPlayerSpawn(float yOffset, float flipDirection)
     {
         int num = Random.Range(0, SpawnLocations.Count);
@@ -631,6 +503,7 @@ public class GridManager : MonoBehaviour
         tileData.tilePosition.y = (int)cell.position.y;
 
         tileData.type = tileCalculator.CheckPiece(tileData.tilePosition);
+        //flipping was done early on to match the dungeon layout, if marked true I think the pieces don't spawn in correctly
         if (!flip)
         {
             float flipValue = tileData.rotation += 90;
@@ -647,15 +520,12 @@ public class GridManager : MonoBehaviour
         }
         tileData.rotation = tileCalculator.Rotation;
         tileData.isRound = isRound;
-        tileData.CheckSurrounding(grid, min, max);
 
-        //print(roomType[cell.roomNumber]);
         tileData.Initialize(cell, (roomType[cell.roomNumber]));
-        //tileData.Initialize(cell);
         cell.pieceType = tileData.type;
         cell.rotation = tileCalculator.Rotation;
         cell.tileObject = newtile;
-        //tileData.CheckAdjacentTiles(cell, grid[(int)cell.position.x +1, (int)cell.position.y],grid[(int)cell.position.x - 1, (int)cell.position.y],grid[(int)cell.position.x, (int)cell.position.y + 1],grid[(int)cell.position.x, (int)cell.position.y - 1]);
+      
         ListOfTiles.Add(cell);
     }
     #region Debugging
@@ -704,48 +574,3 @@ public class GridManager : MonoBehaviour
 
     #endregion
 }
-
-//if(cell.position.x + 1 < max.x - 1)
-//{
-//    try
-//    {
-//        if (grid[(int)cell.position.x + 1, (int)cell.position.y] != null)
-//            cellxp1 = grid[(int)cell.position.x + 1, (int)cell.position.y];
-//    }
-//    catch
-//    {
-//    }
-//}
-//if(cell.position.x - 1 > min.x)
-//{
-//    try
-//    {
-//        if (grid[(int)cell.position.x - 1, (int)cell.position.y] != null)
-//            cellxm1 = grid[(int)cell.position.x + 1, (int)cell.position.y];
-//    }
-//    catch
-//    {
-//    }
-//}
-//if(cell.position.y + 1 < max.y - 1)
-//{
-//    try
-//    {
-//        if (grid[(int)cell.position.x + 1, (int)cell.position.y] != null)
-//            cellxp1 = grid[(int)cell.position.x, (int)cell.position.y + 1];
-//    }
-//    catch
-//    {
-//    }
-//}
-//if(cell.position.y - 1 > min.y)
-//{
-//    try
-//    {
-//        if (grid[(int)cell.position.x, (int)cell.position.y + 1] != null)
-//            cellym1 = grid[(int)cell.position.x, (int)cell.position.y - 1];
-//    }
-//    catch
-//    {
-//    }
-//}

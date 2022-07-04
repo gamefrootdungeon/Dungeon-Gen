@@ -13,13 +13,15 @@ public class UIManager : MonoBehaviour
     public JsonConvertManager conversionManager;
     public CanvasSampleOpenFileTextJson fileBrowser;
 
-
+    //Need to check if spawning player in topdownMode
     public bool isTopDown = false;
 
     [SerializeField]private GameObject MainMenu;
     [SerializeField]private GameObject PauseMenu;
     [SerializeField]private GameObject playBtn;
     [SerializeField] private GameObject userIcon;
+    [SerializeField] private TextMeshProUGUI dungeonTitle;
+    [SerializeField] private GameObject metaWalletInfo;
 
     public GameObject HudUIObj;
 
@@ -37,6 +39,9 @@ public class UIManager : MonoBehaviour
 
     public string userID;
     public TextAsset DefaultJson;
+
+    [Header("DEBUG")]
+    [SerializeField] private bool testingMode = false;
     public void SpawnPlayer()
     {
         gridManager.SpawnPlayer();
@@ -54,17 +59,19 @@ public class UIManager : MonoBehaviour
             ResumeGame();
         }
     }
-    [SerializeField] private bool testingMode = false;
+
     private void Start()
     {
         if (!testingMode)
         {
             if (StoreUserID.instance.isLoggedin == true)
             {
+                metaWalletInfo.SetActive(true);
                 userIcon.SetActive(true);
             }
             else if (StoreUserID.instance.isLoggedin == false)
             {
+                metaWalletInfo.SetActive(false);
                 userIcon.SetActive(false);
             }
             print("Storing values");
@@ -123,6 +130,7 @@ public class UIManager : MonoBehaviour
 
     private void SetUpLevelInfo()
     {
+        dungeonTitle.text = gridManager.title;
         titleInfoText.text = gridManager.title;
         InfoText.text = gridManager.story;
     }
@@ -237,9 +245,10 @@ public class UIManager : MonoBehaviour
 
     public void ToMainMenu()
     {
+        dungeonTitle.text = "";
         Time.timeScale = 1;
         gridManager.DestroyDungeon();
-        playBtn.SetActive(false);
+        //playBtn.SetActive(false);
         playLevelBtnImageCover.SetActive(true);
         isInMenu = true;
         MainMenu.SetActive(true);
@@ -251,6 +260,7 @@ public class UIManager : MonoBehaviour
 
     public void ToPauseMenu()
     {
+
         Time.timeScale = 0;
         isInMenu = true;
         MainMenu.SetActive(false);
