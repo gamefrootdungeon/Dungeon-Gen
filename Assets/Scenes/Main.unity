@@ -3416,7 +3416,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1856896287}
   - component: {fileID: 1856896288}
-  - component: {fileID: 1856896289}
   - component: {fileID: 1856896290}
   m_Layer: 0
   m_Name: UIManager
@@ -3454,7 +3453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridManager: {fileID: 1905496596}
   conversionManager: {fileID: 2067684358}
-  fileBrowser: {fileID: 1856896289}
+  fileBrowser: {fileID: 0}
   isTopDown: 0
   MainMenu: {fileID: 5779127042903695961}
   PauseMenu: {fileID: 5469729749194119466}
@@ -3480,19 +3479,6 @@ MonoBehaviour:
   - {fileID: 4900000, guid: d40edc3d580e51445b91088735a03f55, type: 3}
   testingMode: 1
   jsonView: 
---- !u!114 &1856896289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1856896286}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99a65d6437df64949b37cba4eadc67a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiManager: {fileID: 0}
 --- !u!114 &1856896290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4808,6 +4794,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1286456464817106013, guid: c68ddccb18d989849ad89039d19e9770, type: 3}
     - target: {fileID: 2449633438132383188, guid: 187b39f2a2e241e4c8c004d25e037c2c, type: 3}
+      propertyPath: ChestObj
+      value: 
+      objectReference: {fileID: 7219468813801851967, guid: df930525b195c5047a72cec2982d7eb9, type: 3}
+    - target: {fileID: 2449633438132383188, guid: 187b39f2a2e241e4c8c004d25e037c2c, type: 3}
       propertyPath: JsonText
       value: 
       objectReference: {fileID: 0}
@@ -4831,6 +4821,10 @@ PrefabInstance:
       propertyPath: playerOBJ
       value: 
       objectReference: {fileID: 6439643405133244099, guid: f0c7625f9b5624d4f9ae88c4e33d85dd, type: 3}
+    - target: {fileID: 2449633438132383188, guid: 187b39f2a2e241e4c8c004d25e037c2c, type: 3}
+      propertyPath: uiManager
+      value: 
+      objectReference: {fileID: 1856896288}
     - target: {fileID: 2449633438132383188, guid: 187b39f2a2e241e4c8c004d25e037c2c, type: 3}
       propertyPath: emptySpace
       value: 

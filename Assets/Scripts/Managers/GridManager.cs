@@ -158,6 +158,10 @@ public class GridManager : MonoBehaviour
 
     public void SetUpRoomTypes()
     {
+        foreach(int num in numberOfRooms)
+        {
+            print("room type " +num);
+        }
         //HashSet<int> temp = new HashSet<int>();
         for (int i = 0; i < numberOfRooms.Count + 1; i++)
         {
@@ -262,6 +266,10 @@ public class GridManager : MonoBehaviour
         GameObject World;
         if (World = GameObject.FindGameObjectWithTag("World_Grp"))
         {
+            numberOfRooms.Clear();
+            VisualizernumberOfRooms.Clear();
+            ListOfTiles.Clear();
+            playerStatingRoomNumber = 0;
             roomType.Clear();
             NumEdgePieces.Clear();
             SpawnLocations.Clear();
@@ -407,7 +415,7 @@ public class GridManager : MonoBehaviour
         List<Cell> templist = NumEdgePieces;
         bool hasSpawned = false;
         int num = 0;
-        int NumOfLoops = 0;
+        //int NumOfLoops = 0;
         while (hasSpawned == false)
         {
             num = Random.Range(0, templist.Count);
@@ -419,10 +427,10 @@ public class GridManager : MonoBehaviour
             {
                 templist.RemoveAt(num);
             }
-            NumOfLoops++;
-            if (NumOfLoops == 100)//Stop an infinite loop from happening
-                print("Error couldn't find player starting room!");
-                break;
+            //NumOfLoops++;
+            //if (NumOfLoops == 100)//Stop an infinite loop from happening
+            //    print("Error couldn't find player starting room!");
+            //    break;
         }
         //spawns in the info desk and removes that current edge piece from the list so nothing else can spawn there
         Cell cell = NumEdgePieces[num];
@@ -465,22 +473,35 @@ public class GridManager : MonoBehaviour
     private void FigureOutPlayerStartingRoomNumber()
     {
         print("room numbers around player");
-        if (grid[playerStartGrid.x + 1, playerStartGrid.y].content == Contents.Tile)
+        if (playerStartGrid.x + 1 <= max.x)
         {
-            playerStatingRoomNumber = grid[playerStartGrid.x + 1, playerStartGrid.y].roomNumber;
+            if (grid[playerStartGrid.x + 1, playerStartGrid.y].content == Contents.Tile)
+            {
+                playerStatingRoomNumber = grid[playerStartGrid.x + 1, playerStartGrid.y].roomNumber;
+            }
         }
-        if (grid[playerStartGrid.x - 1, playerStartGrid.y].content == Contents.Tile)
+        if (playerStartGrid.x - 1 >= min.x)//checking out of bounds
         {
-            playerStatingRoomNumber = grid[playerStartGrid.x - 1, playerStartGrid.y].roomNumber;
+            if (grid[playerStartGrid.x - 1, playerStartGrid.y].content == Contents.Tile)
+            {
+                playerStatingRoomNumber = grid[playerStartGrid.x - 1, playerStartGrid.y].roomNumber;
+            }
         }
-        if (grid[playerStartGrid.x, playerStartGrid.y + 1].content == Contents.Tile)
+        if (playerStartGrid.y + 1 <= max.y)//checking out of bounds
         {
-            playerStatingRoomNumber = grid[playerStartGrid.x, playerStartGrid.y + 1].roomNumber;
+            if (grid[playerStartGrid.x, playerStartGrid.y + 1].content == Contents.Tile)
+            {
+                playerStatingRoomNumber = grid[playerStartGrid.x, playerStartGrid.y + 1].roomNumber;
+            }
         }
-        if (grid[playerStartGrid.x, playerStartGrid.y - 1].content == Contents.Tile)
+        if (playerStartGrid.y - 1 >= min.y)//checking out of bounds
         {
-            playerStatingRoomNumber = grid[playerStartGrid.x, playerStartGrid.y - 1].roomNumber;
+            if (grid[playerStartGrid.x, playerStartGrid.y - 1].content == Contents.Tile)
+            {
+                playerStatingRoomNumber = grid[playerStartGrid.x, playerStartGrid.y - 1].roomNumber;
+            }
         }
+
     }
 
     //unsure what the starting door coordinates are so currently just randomly pick between all of the deadend pieces coordinates
