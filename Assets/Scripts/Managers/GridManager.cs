@@ -158,18 +158,13 @@ public class GridManager : MonoBehaviour
 
     public void SetUpRoomTypes()
     {
-        HashSet<int> temp = new HashSet<int>();
+        //HashSet<int> temp = new HashSet<int>();
         for (int i = 0; i < numberOfRooms.Count + 1; i++)
         {
-            print("Count "+numberOfRooms.Count);
             int randomNum;
             randomNum = Random.Range(1, NumberOfDifferentRoomTypes +1);
-
-            print("Room number " + (i));
-            print("number of rooms " + randomNum);
-            temp.Add(randomNum);
+            //temp.Add(randomNum);
             roomType.Add(i, randomNum);
-            
         }
     }
     private void ConvertTo2DArray(ConvertFromJsonToGridClass data)
@@ -245,7 +240,6 @@ public class GridManager : MonoBehaviour
                 player = Instantiate(playerOBJ, playerStartCoord, Quaternion.identity);
             }
         }
-
     }
 
     private void DestroyPlayer()
@@ -262,6 +256,7 @@ public class GridManager : MonoBehaviour
             DestroyPlayer();
         }
     }
+    //need to make sure all values etc are cleared
     public void DestroyDungeon()
     {
         GameObject World;
@@ -406,9 +401,13 @@ public class GridManager : MonoBehaviour
     }
     private void SpawnInfoDesk(float yOffset, float flipDirection)
     {
+        //just cycling through and finding a tile that matches the player starting room number
+        //remove tile from list if it's the wrong room number and randomly pick again
+        //loops until a valid room is found
         List<Cell> templist = NumEdgePieces;
         bool hasSpawned = false;
         int num = 0;
+        int NumOfLoops = 0;
         while (hasSpawned == false)
         {
             num = Random.Range(0, templist.Count);
@@ -420,10 +419,14 @@ public class GridManager : MonoBehaviour
             {
                 templist.RemoveAt(num);
             }
+            NumOfLoops++;
+            if (NumOfLoops == 100)//Stop an infinite loop from happening
+                print("Error couldn't find player starting room!");
+                break;
         }
-        
+        //spawns in the info desk and removes that current edge piece from the list so nothing else can spawn there
         Cell cell = NumEdgePieces[num];
-        if (cell.objectInTile != null)
+        if (cell.objectInTile != null)//checks if there is an object in the tile, if there is then call the function again this is hopefully to stop the chest and desk from spawning on each other
         {
             SpawnInfoDesk(yOffset, flipDirection);
         }
@@ -437,6 +440,7 @@ public class GridManager : MonoBehaviour
             NumEdgePieces.Remove(cell);
         }
     }
+
     private void SpawnChest(float yOffset, float flipDirection)
     {
         int num = Random.Range(0, NumEdgePieces.Count);
@@ -455,28 +459,26 @@ public class GridManager : MonoBehaviour
         }
     }
 
-
+    //This just checks the surrounding tiles around the player starting position
+    //since the player always starts in a deadend tile there will always only be one tile with a room number
+    //stores that room number to figure out which room the player is adjacent to
     private void FigureOutPlayerStartingRoomNumber()
     {
         print("room numbers around player");
         if (grid[playerStartGrid.x + 1, playerStartGrid.y].content == Contents.Tile)
         {
-            print(grid[playerStartGrid.x + 1, playerStartGrid.y].roomNumber);
             playerStatingRoomNumber = grid[playerStartGrid.x + 1, playerStartGrid.y].roomNumber;
         }
         if (grid[playerStartGrid.x - 1, playerStartGrid.y].content == Contents.Tile)
         {
-            print(grid[playerStartGrid.x - 1, playerStartGrid.y].roomNumber);
             playerStatingRoomNumber = grid[playerStartGrid.x - 1, playerStartGrid.y].roomNumber;
         }
         if (grid[playerStartGrid.x, playerStartGrid.y + 1].content == Contents.Tile)
         {
-            print(grid[playerStartGrid.x, playerStartGrid.y + 1].roomNumber);
             playerStatingRoomNumber = grid[playerStartGrid.x, playerStartGrid.y + 1].roomNumber;
         }
         if (grid[playerStartGrid.x, playerStartGrid.y - 1].content == Contents.Tile)
         {
-            print(grid[playerStartGrid.x, playerStartGrid.y - 1].roomNumber);
             playerStatingRoomNumber = grid[playerStartGrid.x, playerStartGrid.y - 1].roomNumber;
         }
     }

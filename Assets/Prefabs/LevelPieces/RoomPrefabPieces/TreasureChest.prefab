@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2418254414305676232}
   - component: {fileID: 4322583377213757404}
   m_Layer: 0
-  m_Name: NFTChest
+  m_Name: TreasureChest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,6 +30,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8051409111811799209}
   m_Father: {fileID: 0}
@@ -165,19 +166,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53208521fffd8a242acf30e93a01b99a, type: 3}
---- !u!1 &8051409111812002157 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 104968, guid: 53208521fffd8a242acf30e93a01b99a, type: 3}
-  m_PrefabInstance: {fileID: 8051409111811902309}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8051409111811799209 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 455628, guid: 53208521fffd8a242acf30e93a01b99a, type: 3}
   m_PrefabInstance: {fileID: 8051409111811902309}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8051409111812002157 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 104968, guid: 53208521fffd8a242acf30e93a01b99a, type: 3}
+  m_PrefabInstance: {fileID: 8051409111811902309}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &3213075361545883204
 Animator:
-  serializedVersion: 3
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -190,6 +191,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1

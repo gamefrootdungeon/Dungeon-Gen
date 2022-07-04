@@ -38,10 +38,12 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI userIDText;
 
     public string userID;
-    public TextAsset DefaultJson;
+    public int currentDemoNum = 0;
+    public TextAsset[] DefaultJson;
 
     [Header("DEBUG")]
     [SerializeField] private bool testingMode = false;
+    //play button calls this funtion
     public void SpawnPlayer()
     {
         gridManager.SpawnPlayer();
@@ -62,6 +64,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        currentDemoNum = 0;
         if (!testingMode)
         {
             if (StoreUserID.instance.isLoggedin == true)
@@ -74,25 +77,17 @@ public class UIManager : MonoBehaviour
                 metaWalletInfo.SetActive(false);
                 userIcon.SetActive(false);
             }
-            print("Storing values");
-            print(StoreUserID.instance.userID);
             userID = StoreUserID.instance.userID;
-
-            print("User ID " + userID);
             userIDText.text = userID;
         }
     }
     private void Update()
     {
-        CheckForEscapeButtonPressed();
-        if (isInMenu && Cursor.visible == false)
-        {
-            Cursor.visible = true;
-        }
-        if(!isInMenu && Cursor.visible == true)
-        {
-            Cursor.visible = false;
-        }
+        //CheckForEscapeButtonPressed();
+        //if (isInMenu && Cursor.visible == false)
+        //    Cursor.visible = true;
+        //if(!isInMenu && Cursor.visible == true)
+        //    Cursor.visible = false;
     }
 
     private void CheckForEscapeButtonPressed()
@@ -102,13 +97,9 @@ public class UIManager : MonoBehaviour
             if (isInGame)
             {
                 if (isInMenu)
-                {
                     ResumeGame();
-                }
                 else
-                {
                     ToPauseMenu();
-                }
             }
         }
     }
@@ -139,16 +130,23 @@ public class UIManager : MonoBehaviour
     #region Load Default JSON
     public void LoadDefaultJson()
     {
+        if (currentDemoNum >= DefaultJson.Length - 1)
+            currentDemoNum = 0;
+        else
+            currentDemoNum++;
         gridManager.DestroyDungeon();
-        string json = DefaultJson.text;
-        string name = DefaultJson.name;
+        //parsing the text from the textasset into the manualConversion function
+        string json = DefaultJson[currentDemoNum].text;
+        string name = DefaultJson[currentDemoNum].name;
         string newJson = conversionManager.ManualConversion(json);
         LoadFileFromBrowser(newJson);
+
     }
 
     #endregion
 
     #region Load JSON from the web
+    //put in a ipfs link that matches the json format and it'll generate from online
     public void LoadFromWeb()
     {
         LoadingLevel();
@@ -179,7 +177,7 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region Load JSON from file browser
-
+    // this is called from CanvasSampleOpenFileTextJson scrip to allow the file browser to work in a webgl application
     public void SetJson(string json)
     {
         string newJson = conversionManager.ManualConversion(json);
@@ -260,7 +258,6 @@ public class UIManager : MonoBehaviour
 
     public void ToPauseMenu()
     {
-
         Time.timeScale = 0;
         isInMenu = true;
         MainMenu.SetActive(false);

@@ -30,24 +30,19 @@ public class JsonConvertManager : MonoBehaviour
     private string story = "";
     string newJson = "";
 
-
     public List<CoordData> Visualcoordinates = new List<CoordData>();
     public string testJson = "";
-    private void Start()
-    {
-        
-    }
     public string ManualConversion(string json)
     {
-        cellJsonCon = new ConvertFromGridToJsonClass();
+        cellJsonCon = new ConvertFromGridToJsonClass();//This class is the structure the new json format will take, it will be converted into a nested array
         Visualcoordinates.Clear();
-        loader.clearAll();
+        loader.clearAll(); //reset the loader class
         GridJsonText = "";
         testJson = "";
         title = "";
         story = "";
         testJson = json;
-        loader.Intialize(json);
+        loader.Intialize(json);//This is where the the json is converted into a nested array
         title = loader.GetTitle;
         story = loader.GetStroy;
         this.min = loader.GetMin;
@@ -56,7 +51,6 @@ public class JsonConvertManager : MonoBehaviour
         grid = new Cell[(int)(max.x), (int)(max.y)];
 
         return SetUpGrid(loader.GetCoordinates);
-        //return newJson;
     }
     private string SetUpGrid(List<CoordData> coordinates)
     {
@@ -68,61 +62,49 @@ public class JsonConvertManager : MonoBehaviour
                 for (int y = 0; y < (max.y); y++)
                 {
                     Vector2 position = new Vector2(x, y);
+                    //Creates new individual Cells for each x,y grid coordinate
                     Cell newCell = new Cell(x, y);
 
+                    //parse room number, width and height
                     newCell.roomNumber = data.roomNumber;
                     newCell.roomWidth = data.roomWidth;
                     newCell.roomLength = data.roomLength;
+                    //checks whether the grid x and y position matches the current x and y loop
                     if (data.gridPosition.x == x && data.gridPosition.y == y)
                     {
+                        //parse whether tile is empty or not
                         newCell.SetContents(Contents.Tile);
-
+                        //parse tile positions
                         if (data.tile.isRound)
-                        {
                             newCell.newTiles(position, true);
-                        }
                         else
                         {
                             newCell.newTiles(position, false);
-
+                            //parse door info
                             if (data.door != null)
                                 if ((int)data.door.position.x == x && (int)data.door.position.y == y)
                                 {
                                     if(data.door.type > 0)
-                                    {
                                         newCell.newDoor(data.door.position, data.door.type, data.door.dir.dir);
-                                    }
                                     else
-                                    {
                                         newCell.newDoor(-Vector2.zero, -1, -Vector2.zero);
-                                    }
-                                }
-                                
+                                }   
+                            //parse note info this won't parse anything while the original json has the spelling "ref"
                             if (data.note != null)
                                 if (data.note.pos.position.x == x && data.note.pos.position.y == y)
                                 {
                                     if (data.note.exist == true)
-                                    {
                                         newCell.NewNotes(data.note.text, data.note.reference, data.note.pos.position, data.note.pos.rawPosition, data.note.exist);
-                                    }
                                     else
-                                    {
                                         newCell.note = null;
-                                    }
                                 }
-
                             if (data.column != null)
                                 if (data.column.position.x == x && data.column.position.y == y)
-                                {
                                     newCell.NewColumn(data.column.position, data.column.exist);
-                                }
 
                             if (data.water != null)
                                 if (data.water.position.x == x && data.water.position.y == y)
-                                {
                                     newCell.NewWater(data.water.position, data.water.exist);
-                                }
-
                         }
                         grid[x, y] = newCell;
                     }

@@ -34,6 +34,7 @@ public class JsonLoader : MonoBehaviour
     }
     public void Intialize(string textJSON)
     {
+        //load the text and convert from json into the levelData class
         levelData = JsonUtility.FromJson<LevelData>(textJSON);
         title = levelData.title;
         story = levelData.story;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NFTChest : MonoBehaviour
+public class TreasureChest : MonoBehaviour
 {
     public bool Open = false;
     public Animator anim;

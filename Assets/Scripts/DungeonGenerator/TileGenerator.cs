@@ -62,7 +62,8 @@ public class TileGenerator
         }
         return PieceType.Null;
     }
-
+    //With all of these y-1 is up and y 1 is down due computers calculating xy 0,0 coordinates at the top left of a screen
+    // and the orinal json files 
     bool IsPiece(Vector2Int coordinates)
     {
         if (coordinates.x < min.x || coordinates.y < min.y || coordinates.x > max.x - 1 || coordinates.y > max.y - 1)

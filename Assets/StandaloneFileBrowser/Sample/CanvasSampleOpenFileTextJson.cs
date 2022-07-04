@@ -24,7 +24,7 @@ public class CanvasSampleOpenFileTextJson : MonoBehaviour, IPointerDownHandler
     private static extern void UploadFile(string gameObjectName, string methodName, string filter, bool multiple);
 
     public void OnPointerDown(PointerEventData eventData) {
-        UploadFile(gameObject.name, "OnFileUpload", ".json", false);
+        UploadFile(gameObject.name, "OnFileUpload", ".json", false);//The ".json" means it is only looking for json files
     }
 
     // Called from browser
@@ -60,6 +60,7 @@ public class CanvasSampleOpenFileTextJson : MonoBehaviour, IPointerDownHandler
 
         yield return loader;
         jsonString = loader.text;
+        //parsing the text from the loaded json file into SetJson function which calls the manualConversion function
         uiManager.SetJson(jsonString);
     }
 }
