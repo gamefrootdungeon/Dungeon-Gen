@@ -39,7 +39,8 @@ public class GridManager : MonoBehaviour
     public GameObject TopDownPlayerOBJ;
     private GameObject player;
     private Vector3 playerStartCoord;
-    private List<TileData> SpawnLocations = new List<TileData>();
+    [SerializeField] private List<TileData> SpawnLocations = new List<TileData>();
+    [SerializeField] private List<GameObject> specialDoorList = new List<GameObject>();
     private Vector2Int playerStartGrid;
 
 
@@ -49,6 +50,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private bool SpawnInNotes = false;
     [SerializeField] private GameObject displayNotesObj;
     [SerializeField] private GameObject ChestObj;
+    [SerializeField] private GameObject speicalDoorObj;
 
     [Header("Rooms")]
     public string title;
@@ -231,9 +233,10 @@ public class GridManager : MonoBehaviour
     #region Resetting functions
     private void DestroyPlayer()
     {
-        playerSpawned = false;
+        print("Destroy player");
         defaultCamera.SetActive(true);
         Destroy(player.gameObject);
+        playerSpawned = false;
     }
 
     public void BackToMenu()
@@ -249,6 +252,7 @@ public class GridManager : MonoBehaviour
         GameObject World;
         if (World = GameObject.FindGameObjectWithTag("World_Grp"))
         {
+            specialDoorList.Clear();
             numberOfRooms.Clear();
             VisualizernumberOfRooms.Clear();
             ListOfTiles.Clear();
@@ -332,7 +336,26 @@ public class GridManager : MonoBehaviour
                 //This is done after all of the piece types have been spawned in
                 if (cell.door.type > 0)
                 {
-                    GameObject newDoor = Instantiate(doorObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
+                    bool createDoor = false;
+                    GameObject newDoor = null;
+                    //According to the creator of the Json generator door type 3 are both the front and backdoor of the dungeon
+                    //This is assuming there is only going to be 2
+                    if (cell.door.type == 3)
+                    {
+                        print("door type 3");
+                        newDoor = Instantiate(speicalDoorObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
+                        SpecialDoorTrigger trigger = newDoor.GetComponent<SpecialDoorTrigger>();
+                        trigger.postion = new Vector2Int((int)cell.position.x, (int)cell.position.y);
+                        createDoor = true;
+                    }
+                    else
+                    {
+                        
+                    }
+                    if(!createDoor)
+                        newDoor = Instantiate(doorObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
+                    //newDoor = Instantiate(doorObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
+
                     if (cell.door.dir.dir == new Vector2(1, 0) || cell.door.dir.dir == new Vector2(-1, 0))
                     {
                         //offsets the doors if they are in a deadend tile piece
@@ -354,7 +377,8 @@ public class GridManager : MonoBehaviour
                                     doorOffset = 2.5f;
                             }
                             newDoor.transform.position = new Vector3(newDoor.transform.position.x + doorOffset, newDoor.transform.position.y, newDoor.transform.position.z);
-                            newDoor.GetComponent<SetDoorActive>().SetTriggersoff();
+                            if (cell.door.type != 3)
+                                newDoor.GetComponent<SetDoorActive>().SetTriggersoff();
                         }
                         newDoor.transform.Rotate(transform.up * 90);
                     }
@@ -377,24 +401,55 @@ public class GridManager : MonoBehaviour
                                 if (cell.rotation == 180)
                                     doorOffset = -2.5f;
                             }
+
                             newDoor.transform.position = new Vector3(newDoor.transform.position.x, newDoor.transform.position.y, newDoor.transform.position.z + doorOffset);
-                            newDoor.GetComponent<SetDoorActive>().SetTriggersoff();
+                            if(cell.door.type != 3)
+                                newDoor.GetComponent<SetDoorActive>().SetTriggersoff();
                         }
                         newDoor.transform.Rotate(transform.up * 0);
+                    }
+                    if(cell.door.type == 3)
+                    {
+                        specialDoorList.Add(newDoor);
                     }
                     newDoor.transform.SetParent(worldGrp.transform);
                 }
             }
         }
-
-        SetPlayerSpawn(yOffset, flipDirection);
+        setSpecialDoors(yOffset, flipDirection);
+        //SetPlayerSpawn(yOffset, flipDirection);
         FigureOutPlayerStartingRoomNumber();
 
         SpawnChest(yOffset, flipDirection);
         SpawnInfoDesk(yOffset, flipDirection);
 
     }
-
+    private void setSpecialDoors(float yOffset, float flipDirection)
+    {
+        int doortype = 1;
+        if(specialDoorList.Count > 1)
+        {
+            foreach(GameObject door in specialDoorList)
+            {
+                SpecialDoorTrigger trigger = door.GetComponent<SpecialDoorTrigger>();
+                switch (doortype)
+                {
+                    case 1:
+                        trigger.doorType = DoorType.EntranceDoor;
+                        break;
+                    case 2:
+                        trigger.doorType = DoorType.ExitDoor;
+                        break;
+                }
+                
+                if(doortype == 1)
+                {
+                    SetPlayerSpawn(trigger.postion, yOffset, flipDirection);
+                }
+                doortype++;
+            }
+        }
+    }
     void InstantiateTilePiece(Cell cell, float yOffset, float flipDirection, bool isRound)
     {
         float posX = cell.position.x;
@@ -506,6 +561,13 @@ public class GridManager : MonoBehaviour
         int num = Random.Range(0, SpawnLocations.Count);
         playerStartGrid = new Vector2Int((int)SpawnLocations[num].tilePosition.x, (int)SpawnLocations[num].tilePosition.y);
         playerStartCoord = new Vector3(SpawnLocations[num].tilePosition.x * offset, 0.5f, ((SpawnLocations[num].tilePosition.y * flipDirection) + yOffset) * offset);
+
+    }
+
+    private void SetPlayerSpawn(Vector2Int nePos, float yOffset, float flipDirection)
+    {
+        playerStartGrid = new Vector2Int(nePos.x, nePos.y);
+        playerStartCoord = new Vector3(nePos.x * offset, 0.5f, ((nePos.y * flipDirection) + yOffset) * offset);
 
     }
 

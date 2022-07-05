@@ -34,6 +34,7 @@ public class JsonConvertManager : MonoBehaviour
     public string testJson = "";
     public string ManualConversion(string json)
     {
+        //Makes sure everything is reset before making a new dungeon conversion
         cellJsonCon = new ConvertFromGridToJsonClass();//This class is the structure the new json format will take, it will be converted into a nested array
         Visualcoordinates.Clear();
         loader.clearAll(); //reset the loader class
@@ -128,7 +129,8 @@ public class JsonConvertManager : MonoBehaviour
         }
         return ConvertGridTo1DArray();
     }
-
+ //converts to a 1DArray so it can parse back into a json file
+ //Unity's Json utility cannot parse a 2DArray
     private string ConvertGridTo1DArray()
     {
         int maxX = (int)max.x;

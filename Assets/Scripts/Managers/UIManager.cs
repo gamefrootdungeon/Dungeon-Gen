@@ -40,6 +40,7 @@ public class UIManager : MonoBehaviour
     public string userID;
     public int currentDemoNum = 0;
     public TextAsset[] DefaultJson;
+    public string[] DefaultJsonIFPSLinks;
     public string jsonView;
 
     [Header("DEBUG")]
@@ -147,13 +148,20 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region Load JSON from the web
+    int currentlinkNum = 0;
+
     //put in a ipfs link that matches the json format and it'll generate from online
     public void LoadFromWeb()
     {
+        if (currentlinkNum >= DefaultJsonIFPSLinks.Length - 1)
+            currentlinkNum = 0;
+        else
+            currentlinkNum++;
+        string link = DefaultJsonIFPSLinks[currentlinkNum];
         LoadingLevel();
-        StartCoroutine(Check());
+        StartCoroutine(Check(link));
     }
-    private IEnumerator Check()
+    private IEnumerator Check(string link)
     {
         using (UnityWebRequest request = UnityWebRequest.Get(jsonLink))
         {
@@ -244,21 +252,28 @@ public class UIManager : MonoBehaviour
 
     public void ToMainMenu()
     {
+        isInGame = false;
+        isInMenu = true;
         dungeonTitle.text = "";
         Time.timeScale = 1;
+        gridManager.BackToMenu();
         gridManager.DestroyDungeon();
         //playBtn.SetActive(false);
         playLevelBtnImageCover.SetActive(true);
-        isInMenu = true;
         MainMenu.SetActive(true);
         PauseMenu.SetActive(false);
         ShowMouse();
         HudUIObj.SetActive(false);
-        gridManager.BackToMenu();
+        levelInfo.SetActive(false);
+
     }
 
     public void ToPauseMenu()
     {
+        if(levelInfo.activeSelf == true)
+        {
+            levelInfo.SetActive(false);
+        }
         Time.timeScale = 0;
         isInMenu = true;
         MainMenu.SetActive(false);

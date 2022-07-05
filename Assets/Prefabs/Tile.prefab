@@ -86,6 +86,8 @@ MonoBehaviour:
     - {fileID: 2218850203076338501, guid: 042a068ad03337849b43cf888e5b0ccd, type: 3}
     - {fileID: 2218850203076338501, guid: e1341cbe1a655cd479db7016a705da42, type: 3}
     - {fileID: 2218850203076338501, guid: 3be0fd67c8f1cbb4b878e994155acc84, type: 3}
+    - {fileID: 367580605754588269, guid: e650ade6e42a36141aa616950243d819, type: 3}
+    - {fileID: 5243242224663706436, guid: a8a1331065738064a8dd3e8b9cf40d17, type: 3}
     SquareEdgePieceGroup:
     - {fileID: 2218850203076338501, guid: a37c9014d262931489832bb5d0b6b7d0, type: 3}
     - {fileID: 4344162390122016061, guid: 27c53b5ad25341b4e975f6aaa573765f, type: 3}
@@ -101,6 +103,8 @@ MonoBehaviour:
     - {fileID: 2682146399415529056, guid: 7e65fa3789b7b9d479f53493065bd183, type: 3}
     - {fileID: 8180304048364418852, guid: 75e2bc4757759484d98a2399a50aa1bb, type: 3}
     - {fileID: 8180304048364418852, guid: b6569b35eb157894190d7369c689bdc4, type: 3}
+    - {fileID: 5263048972286419603, guid: ebb7f66d3afb05c41894849cea0c48b0, type: 3}
+    - {fileID: 5263048972286419603, guid: 3d97465a7fc7d684484207bdbfe48301, type: 3}
     SquareCornerPieceGroup:
     - {fileID: 2218850203076338501, guid: 5ff6d73eeae9b36468f43d2c7638f926, type: 3}
     SquareHallwayPieceGroup:
