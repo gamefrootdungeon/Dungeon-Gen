@@ -3736,6 +3736,7 @@ MonoBehaviour:
   userIcon: {fileID: 579810597}
   dungeonTitle: {fileID: 1713090239}
   metaWalletInfo: {fileID: 462948264}
+  ifpsfirstHalf: https://gateway.pinata.cloud/ipfs/
   HudUIObj: {fileID: 1684858632}
   loadingText: {fileID: 1568389276}
   playLevelBtnImageCover: {fileID: 300632843}
@@ -3753,7 +3754,13 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 065432b5d11041c439a90a6c0de1a51d, type: 3}
   - {fileID: 4900000, guid: f95706dae668d9d49bdd664acc1f5166, type: 3}
   - {fileID: 4900000, guid: 3f9394206d6f1a3429a234176eddfe5b, type: 3}
-  DefaultJsonIFPSLinks: []
+  DefaultJsonIFPSLinks:
+  - QmSeiG1M5RwZbFk3JopAmgp88vQiVqc6bnDiMi3wD3hqEs
+  - QmZzg5d7SUn1GT28GBxqqWSdAzjScbBNGiV6Xv6ZnmvNQn
+  - QmS4TvjhTw7iZhn36qcY7rqCGCoc82KjQuieL9bXMWfz19
+  - QmfPPgXAwxsURx455nhumKxeDUteBMSPyu29Ym7XcgBcqV
+  - QmPDXRCRFo3QJqyYbnjYidiJLkf4d6x573GLKJwT1w12nD
+  - QmcnESiavXQxL8h15ZwdvWDUH77CDdGEjsWyNdDTCrX4sx
   jsonView: 
   testingMode: 0
 --- !u!114 &1856896290

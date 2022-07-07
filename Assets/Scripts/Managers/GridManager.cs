@@ -38,10 +38,10 @@ public class GridManager : MonoBehaviour
     public GameObject FPSPlayerOBJ;
     public GameObject TopDownPlayerOBJ;
     private GameObject player;
-    private Vector3 playerStartCoord;
+    [SerializeField] private Vector3 playerStartCoord;
     [SerializeField] private List<TileData> SpawnLocations = new List<TileData>();
     [SerializeField] private List<GameObject> specialDoorList = new List<GameObject>();
-    private Vector2Int playerStartGrid;
+    [SerializeField] private Vector2Int playerStartGrid;
 
 
     [Header("Objects to spawn")]
@@ -346,11 +346,8 @@ public class GridManager : MonoBehaviour
                         newDoor = Instantiate(speicalDoorObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
                         SpecialDoorTrigger trigger = newDoor.GetComponent<SpecialDoorTrigger>();
                         trigger.postion = new Vector2Int((int)cell.position.x, (int)cell.position.y);
+                        print(trigger.postion);
                         createDoor = true;
-                    }
-                    else
-                    {
-                        
                     }
                     if(!createDoor)
                         newDoor = Instantiate(doorObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
@@ -416,8 +413,11 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-        setSpecialDoors(yOffset, flipDirection);
-        //SetPlayerSpawn(yOffset, flipDirection);
+        if (specialDoorList.Count <= 1)
+            SetPlayerSpawn(yOffset, flipDirection);
+        else
+            setSpecialDoors(yOffset, flipDirection);
+        //setSpecialDoors(yOffset, flipDirection);
         FigureOutPlayerStartingRoomNumber();
 
         SpawnChest(yOffset, flipDirection);
@@ -427,7 +427,27 @@ public class GridManager : MonoBehaviour
     private void setSpecialDoors(float yOffset, float flipDirection)
     {
         int doortype = 1;
-        if(specialDoorList.Count > 1)
+        print("special door count " + specialDoorList.Count);
+        if (specialDoorList.Count == 1)
+        {
+            foreach (GameObject door in specialDoorList)
+            {
+                SpecialDoorTrigger trigger = door.GetComponent<SpecialDoorTrigger>();
+                switch (doortype)
+                {
+                    case 1:
+                        trigger.doorType = DoorType.EntranceDoor;
+                        break;
+                }
+
+                if (doortype == 1)
+                {
+                    SetPlayerSpawn(trigger.postion, yOffset, flipDirection);
+                }
+                doortype++;
+            }
+        }
+        else if (specialDoorList.Count >= 2)
         {
             foreach(GameObject door in specialDoorList)
             {
@@ -449,6 +469,7 @@ public class GridManager : MonoBehaviour
                 doortype++;
             }
         }
+
     }
     void InstantiateTilePiece(Cell cell, float yOffset, float flipDirection, bool isRound)
     {
@@ -558,6 +579,7 @@ public class GridManager : MonoBehaviour
     //unsure what the starting door coordinates are so currently just randomly pick between all of the deadend pieces coordinates
     private void SetPlayerSpawn(float yOffset, float flipDirection)
     {
+        print("Not enought special doors");
         int num = Random.Range(0, SpawnLocations.Count);
         playerStartGrid = new Vector2Int((int)SpawnLocations[num].tilePosition.x, (int)SpawnLocations[num].tilePosition.y);
         playerStartCoord = new Vector3(SpawnLocations[num].tilePosition.x * offset, 0.5f, ((SpawnLocations[num].tilePosition.y * flipDirection) + yOffset) * offset);
@@ -574,26 +596,45 @@ public class GridManager : MonoBehaviour
     //This just checks the surrounding tiles around the player starting position
     //since the player always starts in a deadend tile there will always only be one tile with a room number
     //stores that room number to figure out which room the player is adjacent to
+    //The x and y max values are 1 bigger than where the max grid pieces generate, so whenever comparing a value to a max must minus 1 from it
     private void FigureOutPlayerStartingRoomNumber()
     {
         print("room numbers around player");
-        if (playerStartGrid.x + 1 <= max.x)
+        if (playerStartGrid.x + 1 <= max.x-1)
         {
+            if(grid[playerStartGrid.x + 1, playerStartGrid.y].content == Contents.Empty)
+            {
+                print("Empty!");
+            }
             if (grid[playerStartGrid.x + 1, playerStartGrid.y].content == Contents.Tile)
                 playerStatingRoomNumber = grid[playerStartGrid.x + 1, playerStartGrid.y].roomNumber;
         }
         if (playerStartGrid.x - 1 >= min.x)//checking out of bounds
         {
+            if (grid[playerStartGrid.x - 1, playerStartGrid.y].content == Contents.Empty)
+            {
+                print("Empty!");
+            }
             if (grid[playerStartGrid.x - 1, playerStartGrid.y].content == Contents.Tile)
                 playerStatingRoomNumber = grid[playerStartGrid.x - 1, playerStartGrid.y].roomNumber;
         }
-        if (playerStartGrid.y + 1 <= max.y)//checking out of bounds
+        if (playerStartGrid.y + 1 <= max.y -1)//checking out of bounds// the max needs to minus 1 from it
         {
+
+            if (grid[playerStartGrid.x, playerStartGrid.y + 1].content == Contents.Empty)
+            {
+                print("Empty!");
+            }
             if (grid[playerStartGrid.x, playerStartGrid.y + 1].content == Contents.Tile)
                 playerStatingRoomNumber = grid[playerStartGrid.x, playerStartGrid.y + 1].roomNumber;
+
         }
         if (playerStartGrid.y - 1 >= min.y)//checking out of bounds
         {
+            if (grid[playerStartGrid.x, playerStartGrid.y - 1].content == Contents.Empty)
+            {
+                print("Empty!");
+            }
             if (grid[playerStartGrid.x, playerStartGrid.y - 1].content == Contents.Tile)
                 playerStatingRoomNumber = grid[playerStartGrid.x, playerStartGrid.y - 1].roomNumber;
         }

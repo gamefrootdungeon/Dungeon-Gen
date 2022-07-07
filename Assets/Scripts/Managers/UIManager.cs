@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject userIcon;
     [SerializeField] private TextMeshProUGUI dungeonTitle;
     [SerializeField] private GameObject metaWalletInfo;
+    [SerializeField] private string ifpsfirstHalf = "https://gateway.pinata.cloud/ipfs/";
 
     public GameObject HudUIObj;
 
@@ -50,6 +51,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         currentDemoNum = 0;
+        LoadDefaultJson();
         if (!testingMode)
         {
             if (StoreUserID.instance.isLoggedin == true)
@@ -65,10 +67,20 @@ public class UIManager : MonoBehaviour
             userID = StoreUserID.instance.userID;
             userIDText.text = userID;
         }
+
     }
+
     private void Update()
     {
         CheckForEscapeButtonPressed();
+        if (!isTopDown)
+        {
+            if (isInGame && !isInMenu )
+            {
+                HideMouse();
+                HudUIObj.SetActive(true);
+            }
+        }
     }
 
     //play button calls this funtion
@@ -163,7 +175,7 @@ public class UIManager : MonoBehaviour
     }
     private IEnumerator Check(string link)
     {
-        using (UnityWebRequest request = UnityWebRequest.Get(jsonLink))
+        using (UnityWebRequest request = UnityWebRequest.Get(ifpsfirstHalf+jsonLink))
         {
             yield return request.SendWebRequest();
 
@@ -274,24 +286,29 @@ public class UIManager : MonoBehaviour
         {
             levelInfo.SetActive(false);
         }
-        Time.timeScale = 0;
+        ShowMouse();
+
         isInMenu = true;
         MainMenu.SetActive(false);
         PauseMenu.SetActive(true);
-        ShowMouse();
         HudUIObj.SetActive(false);
+        Time.timeScale = 0;
     }
+
+    [Obsolete]
     public void ResumeGame()
     {
         Time.timeScale = 1;
+        if (!isTopDown)
+        {
+            Application.ExternalEval("window.focus();");//this method is obsolete and sent me here https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html
+            //but I couldn't see anything that could help
+            HudUIObj.SetActive(true);
+            HideMouse();
+        }
         isInMenu = false;
         MainMenu.SetActive(false);
         PauseMenu.SetActive(false);
-        if (!isTopDown)
-        {
-            HideMouse();
-            HudUIObj.SetActive(true);
-        }
     }
 
     #endregion
