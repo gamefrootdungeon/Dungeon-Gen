@@ -19,14 +19,14 @@ public class GridManager : MonoBehaviour
 
 
     [Header("Grid INFO")]
-    [SerializeField] private bool flip;
+    private bool flip = false;
     [SerializeField] private Vector2 min;
     [SerializeField] private Vector2 max;
     private Cell[,] grid;
     private Cell[] Grid1D;
-    public List<Cell> ListOfTiles = new List<Cell>();
-    [SerializeField] private List<Cell> NumEdgePieces = new List<Cell>();
-    public float offset;
+    [SerializeField] private List<Cell> ListOfTiles = new List<Cell>();//Cannot make a 2dArray visble in the inspector so use this list instead
+    private List<Cell> NumEdgePieces = new List<Cell>();
+    [SerializeField] private float offset;
 
     [SerializeField] private GameObject tile;
 
@@ -57,7 +57,7 @@ public class GridManager : MonoBehaviour
     public string story;
     //When add to the array group in the tile prefab remeber to change this number to match the size
     public int NumberOfDifferentRoomTypes;
-    public Dictionary<int, int> roomType = new Dictionary<int, int>();
+    private Dictionary<int, int> roomType = new Dictionary<int, int>();
 
 
     [Header("DEBUG")]
@@ -319,7 +319,9 @@ public class GridManager : MonoBehaviour
                         InstantiateTilePiece(cell, yOffset, flipDirection, false);
                     }
                 }
+                #region adding note data
                 //Spawn in notes from JSON file, these only really work if the json notes name is changed from "ref" to "reference"
+                //Creator of the generator mentioned will add another parameter and add the note data into that, so just need to update to add that in
                 if (SpawnInNotes)
                 {
                     //if the string on the cell has something on it then instantiate a displaynote object
@@ -332,6 +334,9 @@ public class GridManager : MonoBehaviour
                         cell.AddTileData(levelInfo);
                     }
                 }
+                #endregion
+
+                #region Adding door data
                 //Instantiate a door into the grid
                 //This is done after all of the piece types have been spawned in
                 if (cell.door.type > 0)
@@ -345,14 +350,19 @@ public class GridManager : MonoBehaviour
                         print("door type 3");
                         newDoor = Instantiate(speicalDoorObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
                         SpecialDoorTrigger trigger = newDoor.GetComponent<SpecialDoorTrigger>();
-                        trigger.postion = new Vector2Int((int)cell.position.x, (int)cell.position.y);
-                        print(trigger.postion);
+                        trigger.offset = offset;
+                        trigger.yOffset = yOffset; ;
+                        trigger.flipDirection = flipDirection;
+                        trigger.positionInt = new Vector2Int((int)cell.position.x, (int)cell.position.y);
+                        trigger.positiion = new Vector3(cell.position.x * offset, 3.5f, ((cell.position.y * flipDirection) + yOffset) * offset);
+                        trigger.rotation = cell.rotation;
+                        print(trigger.positionInt);
                         createDoor = true;
                     }
                     if(!createDoor)
                         newDoor = Instantiate(doorObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
                     //newDoor = Instantiate(doorObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
-
+                    
                     if (cell.door.dir.dir == new Vector2(1, 0) || cell.door.dir.dir == new Vector2(-1, 0))
                     {
                         //offsets the doors if they are in a deadend tile piece
@@ -361,19 +371,44 @@ public class GridManager : MonoBehaviour
                             float doorOffset = 0;
                             if(cell.door.dir.dir == new Vector2(1, 0))
                             {
-                                if(cell.rotation == 270)
-                                    doorOffset = -2.5f;
-                                if(cell.rotation == 90)
-                                    doorOffset = 2.5f;
+                                if (cell.door.type == 3)
+                                {
+                                    SpecialDoorTrigger trigger = newDoor.GetComponent<SpecialDoorTrigger>();
+                                    if (cell.rotation == 270)
+                                        trigger.doorOffset = -2.5f;
+                                    if (cell.rotation == 90)
+                                        trigger.doorOffset = 2.5f;
+                                }
+                                else
+                                {
+                                    if (cell.rotation == 270)
+                                        doorOffset = -2.5f;
+                                    if (cell.rotation == 90)
+                                        doorOffset = 2.5f;
+                                }
                             }
                             else if(cell.door.dir.dir == new Vector2(-1, 0))
                             {
-                                if (cell.rotation == 270)
-                                    doorOffset = -2.5f;
-                                if (cell.rotation == 90)
-                                    doorOffset = 2.5f;
+                                if (cell.door.type == 3)
+                                {
+                                    SpecialDoorTrigger trigger = newDoor.GetComponent<SpecialDoorTrigger>();
+                                    if (cell.rotation == 270)
+                                        trigger.doorOffset = -2.5f;
+                                    if (cell.rotation == 90)
+                                        trigger.doorOffset = 2.5f;
+                                }
+                                else
+                                {
+                                    if (cell.rotation == 270)
+                                        doorOffset = -2.5f;
+                                    if (cell.rotation == 90)
+                                        doorOffset = 2.5f;
+                                }
+
                             }
                             newDoor.transform.position = new Vector3(newDoor.transform.position.x + doorOffset, newDoor.transform.position.y, newDoor.transform.position.z);
+
+                           
                             if (cell.door.type != 3)
                                 newDoor.GetComponent<SetDoorActive>().SetTriggersoff();
                         }
@@ -386,17 +421,41 @@ public class GridManager : MonoBehaviour
                             float doorOffset = 0;
                             if (cell.door.dir.dir == new Vector2(0, 1))
                             {
-                                if (cell.rotation == 0)
-                                    doorOffset = 2.5f;
-                                if (cell.rotation == 180)
-                                    doorOffset = -2.5f;
+                                if (cell.door.type == 3)
+                                {
+                                    SpecialDoorTrigger trigger = newDoor.GetComponent<SpecialDoorTrigger>();
+                                    if (cell.rotation == 0)
+                                        trigger.doorOffset = 2.5f;
+                                    if (cell.rotation == 180)
+                                        trigger.doorOffset = -2.5f;
+                                }
+                                else
+                                {
+                                    if (cell.rotation == 0)
+                                        doorOffset = 2.5f;
+                                    if (cell.rotation == 180)
+                                        doorOffset = -2.5f;
+                                }
+
                             }
                             else if (cell.door.dir.dir == new Vector2(0, -1))
                             {
-                                if (cell.rotation == 0)
-                                    doorOffset = 2.5f;
-                                if (cell.rotation == 180)
-                                    doorOffset = -2.5f;
+                                if (cell.door.type == 3)
+                                {
+                                    SpecialDoorTrigger trigger = newDoor.GetComponent<SpecialDoorTrigger>();
+                                    if (cell.rotation == 0)
+                                        trigger.doorOffset = 2.5f;
+                                    if (cell.rotation == 180)
+                                        trigger.doorOffset = -2.5f;
+                                }
+                                else
+                                {
+                                    if (cell.rotation == 0)
+                                        doorOffset = 2.5f;
+                                    if (cell.rotation == 180)
+                                        doorOffset = -2.5f;
+                                }
+
                             }
 
                             newDoor.transform.position = new Vector3(newDoor.transform.position.x, newDoor.transform.position.y, newDoor.transform.position.z + doorOffset);
@@ -411,19 +470,21 @@ public class GridManager : MonoBehaviour
                     }
                     newDoor.transform.SetParent(worldGrp.transform);
                 }
+                #endregion
             }
         }
+        //if there is only one door with the type = 3 then the special door count will be 1 and will just spawn in the player at a random deadenn tile piece
         if (specialDoorList.Count <= 1)
             SetPlayerSpawn(yOffset, flipDirection);
         else
             setSpecialDoors(yOffset, flipDirection);
-        //setSpecialDoors(yOffset, flipDirection);
         FigureOutPlayerStartingRoomNumber();
 
         SpawnChest(yOffset, flipDirection);
         SpawnInfoDesk(yOffset, flipDirection);
 
     }
+    //special doors are really the entrance door and exit/ back door
     private void setSpecialDoors(float yOffset, float flipDirection)
     {
         int doortype = 1;
@@ -442,7 +503,7 @@ public class GridManager : MonoBehaviour
 
                 if (doortype == 1)
                 {
-                    SetPlayerSpawn(trigger.postion, yOffset, flipDirection);
+                    SetPlayerSpawn(trigger.positionInt, yOffset, flipDirection);
                 }
                 doortype++;
             }
@@ -464,7 +525,7 @@ public class GridManager : MonoBehaviour
                 
                 if(doortype == 1)
                 {
-                    SetPlayerSpawn(trigger.postion, yOffset, flipDirection);
+                    SetPlayerSpawn(trigger.positionInt, yOffset, flipDirection);
                 }
                 doortype++;
             }

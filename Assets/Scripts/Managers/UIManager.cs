@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dungeonTitle;
     [SerializeField] private GameObject metaWalletInfo;
     [SerializeField] private string ifpsfirstHalf = "https://gateway.pinata.cloud/ipfs/";
+    [SerializeField] private GameObject itsLockedText;
 
     public GameObject HudUIObj;
 
@@ -70,6 +71,14 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void ShowItsLocked()
+    {
+        itsLockedText.SetActive(true);
+    }
+    public void HideItsLocked()
+    {
+        itsLockedText.SetActive(false);
+    }
     private void Update()
     {
         CheckForEscapeButtonPressed();
@@ -165,17 +174,23 @@ public class UIManager : MonoBehaviour
     //put in a ipfs link that matches the json format and it'll generate from online
     public void LoadFromWeb()
     {
+
+        gridManager.DestroyDungeon();
         if (currentlinkNum >= DefaultJsonIFPSLinks.Length - 1)
             currentlinkNum = 0;
         else
             currentlinkNum++;
-        string link = DefaultJsonIFPSLinks[currentlinkNum];
+        string link = ifpsfirstHalf+DefaultJsonIFPSLinks[currentlinkNum];
+        print(link);
         LoadingLevel();
+        StopAllCoroutines();
         StartCoroutine(Check(link));
+
     }
     private IEnumerator Check(string link)
     {
-        using (UnityWebRequest request = UnityWebRequest.Get(ifpsfirstHalf+jsonLink))
+        print("Link " + link);
+        using (UnityWebRequest request = UnityWebRequest.Get(link))
         {
             yield return request.SendWebRequest();
 
@@ -189,10 +204,14 @@ public class UIManager : MonoBehaviour
                 print("Successfully downloaded text!");
                 print(request.downloadHandler.text);
                 jsonData = request.downloadHandler.text;
+
                 string newJsonData = conversionManager.ManualConversion(jsonData);
+                print(newJsonData);
                 SetUpLevel(newJsonData);
             }
         }
+        yield break;
+
     }
 
     #endregion
@@ -248,8 +267,7 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
-    #region Menus
-
+    #region Loading Functions
     public void LoadingLevel()
     {
         loadingText.SetActive(true);
@@ -260,7 +278,10 @@ public class UIManager : MonoBehaviour
         playBtn.SetActive(true);
         playLevelBtnImageCover.SetActive(false);
     }
+    #endregion
 
+
+    #region Menus
 
     public void ToMainMenu()
     {
@@ -268,9 +289,9 @@ public class UIManager : MonoBehaviour
         isInMenu = true;
         dungeonTitle.text = "";
         Time.timeScale = 1;
+        HideItsLocked();
         gridManager.BackToMenu();
         gridManager.DestroyDungeon();
-        //playBtn.SetActive(false);
         playLevelBtnImageCover.SetActive(true);
         MainMenu.SetActive(true);
         PauseMenu.SetActive(false);
@@ -287,7 +308,7 @@ public class UIManager : MonoBehaviour
             levelInfo.SetActive(false);
         }
         ShowMouse();
-
+        HideItsLocked();
         isInMenu = true;
         MainMenu.SetActive(false);
         PauseMenu.SetActive(true);
