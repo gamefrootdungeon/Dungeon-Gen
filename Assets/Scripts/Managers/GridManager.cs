@@ -363,7 +363,7 @@ public class GridManager : MonoBehaviour
                         newDoor = Instantiate(doorObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
                     //newDoor = Instantiate(doorObj, new Vector3(cell.position.x * offset, 1, ((cell.position.y * flipDirection) + yOffset) * offset), Quaternion.identity);
                     
-                    if (cell.door.dir.dir == new Vector2(1, 0) || cell.door.dir.dir == new Vector2(-1, 0))
+                    if (cell.door.dir.dir == new Vector2(1, 0) || cell.door.dir.dir == new Vector2(-1, 0))//splt between which direction the door is facing, the offset position is applied to either x or z depending
                     {
                         //offsets the doors if they are in a deadend tile piece
                         if(cell.pieceType == PieceType.Deadend)
