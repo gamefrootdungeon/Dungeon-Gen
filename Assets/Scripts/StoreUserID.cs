@@ -24,4 +24,11 @@ public class StoreUserID : MonoBehaviour
             DontDestroyOnLoad(instance);
         }
     }
+
+    public void ResetValues()
+    {
+        string userID = "";
+        bool isLoggedin = false;
+        string response = "";
+    }
 }

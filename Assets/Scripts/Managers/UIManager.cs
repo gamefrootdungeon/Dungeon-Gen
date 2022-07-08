@@ -150,6 +150,13 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+    private void LoadCurrentDefaultDungeon()
+    {
+        string json = DefaultJson[currentDemoNum].text;
+        string name = DefaultJson[currentDemoNum].name;
+        string newJson = conversionManager.ManualConversion(json);
+        LoadFileFromBrowser(newJson);
+    }
     #region Load Default JSON
     public void LoadDefaultJson()
     {
@@ -157,12 +164,9 @@ public class UIManager : MonoBehaviour
             currentDemoNum = 0;
         else
             currentDemoNum++;
+
         gridManager.DestroyDungeon();
-        //parsing the text from the textasset into the manualConversion function
-        string json = DefaultJson[currentDemoNum].text;
-        string name = DefaultJson[currentDemoNum].name;
-        string newJson = conversionManager.ManualConversion(json);
-        LoadFileFromBrowser(newJson);
+        LoadCurrentDefaultDungeon();
 
     }
 
@@ -285,6 +289,7 @@ public class UIManager : MonoBehaviour
 
     public void ToMainMenu()
     {
+
         isInGame = false;
         isInMenu = true;
         dungeonTitle.text = "";
@@ -298,7 +303,7 @@ public class UIManager : MonoBehaviour
         ShowMouse();
         HudUIObj.SetActive(false);
         levelInfo.SetActive(false);
-
+        LoadCurrentDefaultDungeon();
     }
 
     public void ToPauseMenu()
